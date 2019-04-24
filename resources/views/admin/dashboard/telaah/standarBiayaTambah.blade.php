@@ -18,8 +18,18 @@
                     <h3 class="box-title">Tambah Referensi Standart Biaya Tahun {{$tahun}}</h3>
                 </div><!-- /.box-header -->
                 
+                @if($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="box-body">
-                    <form role="form" method="POST" action="{{ url('standarBiaya/tambahProses/'.$tahun.'') }}">
+                    <form role="form" method="POST" enctype="multipart/form-data" action="{{ url('standarBiaya/tambahProses/'.$tahun.'') }}">
                         @csrf
                         <table width="100%" style="padding:3px">
                             <tr>
@@ -42,27 +52,30 @@
 
                             <tr>
                                 <td style="text-align:right; padding:10px">Persediaan</td>
-                                <td><input type="text" class="form-control"></td>
+                                <td><input type="text" name="persediaan" id="persediaan" class="form-control"></td>
                             </tr>
 
                             <tr>
                                 <td style="text-align:right; padding:10px">Kebutuhan</td>
-                                <td><input type="text" class="form-control"></td>
+                                <td><input type="text" name="kebutuhan" id="kebutuhan" class="form-control"></td>
                             </tr>
 
                             <tr>
                                 <td style="text-align:right; padding:10px">Harga Satuan</td>
-                                <td><input type="text" class="form-control"></td>
+                                <td><input type="text" name="harga" id="harga" class="form-control"></td>
                             </tr>
 
                             <tr>
                                 <td style="text-align:right; padding:10px">Dasar penentuan harga</td>
-                                <td><input type="text" class="form-control"></td>
+                                <td><input type="text" name="dasar" id="harga" class="form-control"></td>
                             </tr>
 
                             <tr>
                                 <td style="text-align:right; padding:10px">Lampiran</td>
-                                <td><input type="file" class="form-control"></td>
+                                <td>
+                                    <input id="file" class="btn btn-info" type="file" name="file" data-show-preview="true">
+                                    <p id="loading"></p>
+                                </td>
                             </tr>
                             <tr>
                                 <td></td>

@@ -58,7 +58,9 @@
                     <td>{{{$data->nama_barang}}}</td>
                     <td>{{{$data->harga_satuan}}}</td>
                     <td>{{{$data->dasar_harga}}}</td>
-                    <td>{{{$data->lampiran}}}</td>
+                    <td>
+                        <a href="{{asset('storage/standar_biaya/'.$data->lampiran)}}">aaaa</a>
+                    </td>
                     <td>
                     <div class="btn-group">
                         <a href="" data-toggle="modal" data-target="#edit{{$data->id_kebutuhan_barang}}" class="btn btn-info btn-sm" title="Edit"><i class="fa fa-edit"></i></a>

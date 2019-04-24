@@ -29,6 +29,12 @@
     <link href="{{URL::asset('img/sjt.ico') }}" rel="SHORTCUT ICON" />
     <link href="{{URL::asset('admin/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css">
 
+    <!-- Upload File -->
+    <link href="{{URL::asset('file_input/fileinput.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{URL::asset('file_input/bootstrap.min.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <script src="{{URL::asset('file_input/fileinput.js')}}" type="text/javascript"></script>
+    <script src="{{URL::asset('file_input/bootstrap.min.js') }}" type="text/javascript"></script>
+    <script src="{{URL::asset('file_input/jquery.js') }}" type="text/javascript"></script>
 
     <!-- selectize -->
     <script type="text/javascript" src="{{ URL::asset('selectize/jquery-1.10.2.min.js')}}"></script>

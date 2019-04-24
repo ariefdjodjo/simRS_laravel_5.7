@@ -93,7 +93,7 @@ Route::group(['middleware' => ['web','auth','level:3', 'status:1']], function(){
 	//Route untuk Standart Biaya
 	Route::get('standarBiaya/{tahun}', array('as'=>'MasterBarang', 'uses'=>'MstStandarBiayaController@index'));
 	Route::get('standarBiaya/tambah/{tahun}', array('as'=>'MasterBarang', 'uses'=>'MstStandarBiayaController@tambah'));
-	Route::post('standarBiaya/tambahProses', array('as'=>'masterBarangTambah', 'uses'=>'MstStandarBiayaController@tambahProses'));
+	Route::post('standarBiaya/tambahProses/{tahun}', array('as'=>'masterBarangTambah', 'uses'=>'MstStandarBiayaController@tambahProses'));
 	Route::post('standarBiaya/edit/{id}', array('as'=>'MasterBarangEdit', 'uses'=>'MstStandarBiayaController@edit'));
 	Route::post('standarBiaya/hapus/{id}', array('as'=>'MasterBarangEdit', 'uses'=>'MstStandarBiayaController@hapus'));
 });

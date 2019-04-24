@@ -5,11 +5,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\MstStandarBiaya as StandarBiaya;
 use App\RkaklTahun as Tahun;
 use App\MstBarang as MstBarang;
 use Redirect;
-use Storage;
 use DB;
 use Validator;
 
@@ -38,20 +38,37 @@ class MstStandarBiayaController extends Controller
     public function tambahProses(request $request, $tahun) {
         $input 	= $request->all();
 		$pesan 	= array(
-			
+            'file.mimes' => 'File dalam format .PDF , .xlsx, .xls, .doc, .docx',
+            'file.max' => 'Maksimal 10 MB'
 		);
 
 		$aturan = array(
-
+            'file' => 'mimes:pdf,xlsx,xls,doc,docx | max:10240'
 		);
 
 		$validasi = Validator::make($input,$aturan, $pesan);
 
 		if ($validasi->fails()) {
-            return redirect('akun/'.$request->tahun)
+            return redirect('standarBiaya/tambah/'.$request->tahun)
                         ->withErrors($validasi)
                         ->withInput();
         }
-        //coba
+        
+        $file = $request->file;
+        $name = 'SB-'.$file->getClientOriginalName();
+        $path = $file->storeAs('public/standar_biaya', $name);
+
+        $standar = new StandarBiaya();
+        $standar->tahun = $tahun;
+        $standar->id_master_barang = $request->nama_barang;
+        $standar->barang_tersedia = $request->persediaan;
+        $standar->kebutuhan = $request->kebutuhan;
+        $standar->harga_satuan = $request->harga;
+        $standar->dasar_harga = $request->dasar;
+        $standar->lampiran = $name;
+        $standar->save();
+
+        return Redirect('standarBiaya/'.$tahun);
+
     }
 }
