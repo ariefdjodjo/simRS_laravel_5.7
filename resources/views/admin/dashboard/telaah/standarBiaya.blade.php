@@ -30,10 +30,21 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Data Master Akun Anggaran</h3>
+                    <h3 class="box-title">Data Master Standart Biaya</h3>
                 </div><!-- /.box-header -->
                 
                 <div class="box-body">
+    
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
     @if($tahun == 0) 
         Pilih Tahun 
     @else
@@ -43,31 +54,33 @@
         <thead>
             <tr>
             <th width="5%">No</th>
-            <th width="10%">Nama Barang</th>
-            <th width="40%">Harga Satuan</th>
+            <th width="30%">Nama Barang</th>
+            <th width="15%">Harga Satuan</th>
             <th width="15%">Dasar Penentuan</th>
             <th width="15%">Lampiran</th>
-            <th width="20%">Action</th>
+            <th width="10%">Action</th>
             </tr>
         </thead>
         <tbody>
             <?php $urut=1; ?>
             @foreach($standar as $data)
                 <tr>
-                    <td>{{{$urut++}}}</td>
+                    <td style="text-align:center">{{{$urut++}}}</td>
                     <td>{{{$data->nama_barang}}}</td>
-                    <td>{{{$data->harga_satuan}}}</td>
+                    <td style="text-align:right">{{{getNumber($data->harga_satuan)}}}</td>
                     <td>{{{$data->dasar_harga}}}</td>
-                    <td>
-                        <a href="{{asset('storage/standar_biaya/'.$data->lampiran)}}">aaaa</a>
+                    <td style="text-align:center">
+                        <a href="{{asset('storage/standar_biaya/'.$data->lampiran)}}" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Download</a>
                     </td>
                     <td>
                     <div class="btn-group">
-                        <a href="" data-toggle="modal" data-target="#edit{{$data->id_kebutuhan_barang}}" class="btn btn-info btn-sm" title="Edit"><i class="fa fa-edit"></i></a>
-                        <a href="" data-toggle="modal" data-target="#hapus{{$data->id_kebutuhan_barang}}" class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash"></i></a>
+                        <a href="{{url::to('/standarBiaya/edit/'.$tahun.'/'.$data->id_kebutuhan_barang)}}" class="btn btn-info btn-sm" title="Edit"><i class="fa fa-edit"></i></a>
+                        <a href="{{url::to('/standarBiaya/hapus/'.$tahun.'/'.$data->id_kebutuhan_barang)}}" class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash"></i></a>
                     </div>
                     </td>
                 </tr>
+
+                <!-- modal menampilkan file lampiran -->
             @endforeach
         </tbody>
         </table>  

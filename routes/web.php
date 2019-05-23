@@ -73,6 +73,13 @@ Route::group(['middleware' => ['web','auth','level:2', 'status:1']], function(){
 	Route::post('ttdUsulan/setDefault', array('as'=>'ttdUsulansetDefault', 'uses'=>'TtdUsulanController@setDefault'));
 	Route::post('ttdUsulan/edit/{id}', array('as'=>'ttdUsulanEdit', 'uses'=>'TtdUsulanController@edit'));
 	Route::post('ttdUsulan/hapus/{id}', array('as'=>'ttdUsulanEdit', 'uses'=>'TtdUsulanController@hapus'));
+
+	//route untuk membuat usulan
+	Route::get('usulan/', array('as'=>'usulan', 'uses'=>'UsulanController@index'));
+	Route::get('tambahUsulan/', array('as'=>'tambahUsulan', 'uses'=>'UsulanController@tambah'));
+	Route::post('usulan/prosesTambah/', array('as'=>'prosesTambah', 'uses'=>'UsulanController@prosesTambah'));
+	Route::get('tambahItemBarang/{id}', array('as'=>'addItem', 'uses'=>'UsulanController@addItem'));
+	Route::get('usulan/draftUsulan/{tahun}', array('as'=>'draftUsulan', 'uses'=>'UsulanController@draftUsulan'));
 });
 
 //route untuk Actor penelaah
@@ -91,11 +98,12 @@ Route::group(['middleware' => ['web','auth','level:3', 'status:1']], function(){
 	Route::post('masterBarang/hapus/{id}', array('as'=>'MasterBarangEdit', 'uses'=>'MstBarangController@hapus'));
 
 	//Route untuk Standart Biaya
-	Route::get('standarBiaya/{tahun}', array('as'=>'MasterBarang', 'uses'=>'MstStandarBiayaController@index'));
-	Route::get('standarBiaya/tambah/{tahun}', array('as'=>'MasterBarang', 'uses'=>'MstStandarBiayaController@tambah'));
-	Route::post('standarBiaya/tambahProses/{tahun}', array('as'=>'masterBarangTambah', 'uses'=>'MstStandarBiayaController@tambahProses'));
-	Route::post('standarBiaya/edit/{id}', array('as'=>'MasterBarangEdit', 'uses'=>'MstStandarBiayaController@edit'));
-	Route::post('standarBiaya/hapus/{id}', array('as'=>'MasterBarangEdit', 'uses'=>'MstStandarBiayaController@hapus'));
+	Route::get('standarBiaya/{tahun}', array('as'=>'MasterStandarBiaya', 'uses'=>'MstStandarBiayaController@index'));
+	Route::get('standarBiaya/tambah/{tahun}', array('as'=>'MasterStandarBiaya', 'uses'=>'MstStandarBiayaController@tambah'));
+	Route::post('standarBiaya/tambahProses/{tahun}', array('as'=>'MasterStandarBiayaTambah', 'uses'=>'MstStandarBiayaController@tambahProses'));
+	Route::get('standarBiaya/edit/{tahun}/{id}', array('as'=>'MasterStandarBiayaEdit', 'uses'=>'MstStandarBiayaController@edit'));
+	Route::post('standarBiaya/prosesEdit/{tahun}', array('as'=>'MasterStandarBiayaEdit', 'uses'=>'MstStandarBiayaController@prosesEdit'));
+	Route::get('standarBiaya/hapus/{tahun}/{id}', array('as'=>'MasterStandarBiayaHapus', 'uses'=>'MstStandarBiayaController@hapus'));
 });
 
 //route untuk Actor spp

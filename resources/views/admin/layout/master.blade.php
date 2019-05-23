@@ -9,6 +9,8 @@
     <!-- Bootstrap 3.3.5 -->
       
      <link href="{{URL::asset('admin/bootstrap/css/bootstrap.css')}}"  rel="stylesheet"  type="text/css"> 
+     <link href="{{URL::asset('admin/bootstrap/css/datepicker.css')}}"  rel="stylesheet"  type="text/css"> 
+
     <!-- Font Awesome -->
     <link href="{{URL::asset('admin/bootstrap/css/font-awesome.min.css')}}"  rel="stylesheet"  type="text/css" >
     <!-- Ionicons -->
@@ -28,13 +30,6 @@
     <link href="{{URL::asset('admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{URL::asset('img/sjt.ico') }}" rel="SHORTCUT ICON" />
     <link href="{{URL::asset('admin/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css">
-
-    <!-- Upload File -->
-    <link href="{{URL::asset('file_input/fileinput.css')}}" media="all" rel="stylesheet" type="text/css" />
-    <link href="{{URL::asset('file_input/bootstrap.min.css')}}" media="all" rel="stylesheet" type="text/css" />
-    <script src="{{URL::asset('file_input/fileinput.js')}}" type="text/javascript"></script>
-    <script src="{{URL::asset('file_input/bootstrap.min.js') }}" type="text/javascript"></script>
-    <script src="{{URL::asset('file_input/jquery.js') }}" type="text/javascript"></script>
 
     <!-- selectize -->
     <script type="text/javascript" src="{{ URL::asset('selectize/jquery-1.10.2.min.js')}}"></script>
@@ -103,7 +98,7 @@
 <script src="{{ URL::asset('admin/plugins/knob/jquery.knob.js') }}"></script>
 <script src="{{ URL::asset('admin/plugins/moment/moment.min.js') }}"></script>
 <script src="{{ URL::asset('admin/plugins/daterangepicker/daterangepicker.js') }}"></script>
-<script src="{{ URL::asset('admin/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+<script src="{{ URL::asset('admin/bootstrap/js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ URL::asset('admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
 
 <script src="{{ URL::asset('admin/plugins/fastclick/fastclick.min.js') }}"></script>
