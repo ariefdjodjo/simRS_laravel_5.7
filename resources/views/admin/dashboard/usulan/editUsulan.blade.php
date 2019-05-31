@@ -26,11 +26,11 @@
   <div class="col-xs-12">
     <div class="box">
       <div class="box-header with-border">
-        <h3 class="box-title">Tambah Usulan</h3>
+        <h3 class="box-title">Edit Usulan</h3>
       </div><!-- /.box-header -->
       
       <div class="box-body">
-        <form action="{{url('usulan/prosesTambah')}}" method="POST" class="form-horizontal" name="form_usulan" id="formUsulan">
+        <form action="{{url('usulan/prosesEdit/'.$id)}}" method="POST" class="form-horizontal" name="form_usulan" id="formUsulan">
           @csrf
 
           <!-- Select Basic -->
@@ -38,6 +38,7 @@
             <label class="col-md-2 control-label" for="jenis_usulan">Jenis Usulan</label>
             <div class="col-md-5">
               <select id="jenis_usulan" name="jenis_usulan" class="form-control" required>
+                  <option value="{{$usulan->jenis_usulan}}">{{getJenis($usulan->jenis_usulan)}}</option>
                 <option value="">-- Pilih Jenis Usulan --</option>
                 <option value="5201">Barang Cetakan</option>
                 <option value="5202">Barang ATK</option>
@@ -62,6 +63,7 @@
               <label class="col-md-2 control-label" for="tahun">Tahun Anggaran</label>
               <div class="col-md-5">
                 <select id="tahun" name="tahun" class="form-control" required>
+                    <option value="{{$usulan->tahun}}">{{$usulan->tahun}}</option>
                   <option value="">-- Pilih Tahun --</option>
                   @foreach ($tahun as $th)
                     <option value="{{$th->tahun}}">{{$th->tahun}}</option>
@@ -80,7 +82,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label" for="no_usulan">Nomor Usulan</label>  
             <div class="col-md-4">
-            <input id="no_usulan" name="no_usulan" type="text" placeholder="Nomor Usulan" class="form-control input-md" required="" >
+            <input id="no_usulan" name="no_usulan" type="text" placeholder="Nomor Usulan" value="{{$usulan->no_usulan}}" class="form-control input-md" required="" >
             <span class="help-block"></span>  
             </div>
           </div>
@@ -89,7 +91,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label" for="tgl_usulan">Tanggal Usulan</label>  
             <div class="col-md-2">
-            <input id="tgl_usulan" name="tgl_usulan" type="text" placeholder="Tanggal Usulan" class="form-control input-md datepicker" required="">
+            <input id="tgl_usulan" name="tgl_usulan" type="text" value="{{$usulan->tgl_usulan}}" placeholder="Tanggal Usulan" class="form-control input-md datepicker" required="">
             <span class="help-block"></span>  
             </div>
           </div>
@@ -105,7 +107,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label" for="perihal">Perihal</label>  
             <div class="col-md-8">
-            <input id="perihal" name="perihal" type="text" placeholder="Perihal" class="form-control input-md" required="">
+            <input id="perihal" name="perihal" type="text" value="{{$usulan->perihal_usulan}}" placeholder="Perihal" class="form-control input-md" required="">
             <span class="help-block"></span>  
             </div>
           </div>
@@ -114,7 +116,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label" for="isi">Isi Usulan</label>  
             <div class="col-md-8">
-            <textarea name="isi" id="isi" class="form-control input-md"></textarea>
+            <textarea name="isi" id="isi" class="form-control input-md">{{$usulan->isi_usulan}}</textarea>
             <span class="help-block"></span>  
             </div>
           </div>
@@ -131,6 +133,7 @@
             <label class="col-md-2 control-label" for="pengirim">Pengirim</label>
             <div class="col-md-4">
               <select id="pengirim" name="pengirim" class="form-control">
+                <option value="{{$usulan->id_ttd_usulan}}">{{$usulan->nama_kepala}} - {{$usulan->jabatan}}</option>
                 <option value="">Pilih Pengirim</option>
                 @foreach ($pengirim as $data)
               <option value="{{$data->id_ttd_usulan}}">{{$data->nama_kepala}} - {{$data->jabatan}}</option>

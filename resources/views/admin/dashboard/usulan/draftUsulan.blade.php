@@ -27,6 +27,9 @@
         </div>
     </div>
 
+    <?php 
+        $urut   = 1;
+    ?>
     <div class="box box-primary">
         <div class="box-header">
             <b><h3>Data Draft Usulan</h3></b>
@@ -41,14 +44,25 @@
                     <tr>
                         <th width="5%">No</th>
                         <th width="15%">Nomor Usulan</th>
+                        <th width="10%">Lampiran</th>
                         <th width="25%">Perihal Usulan</th>
                         <th width="15%">RAB</th>
-                        <th width="10%">Lampiran</th>
                         <th width="10%">#</th>
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    @foreach ($usulan as $data)
+                        <tr>
+                            <td>{{$urut++}}</td>
+                            <td>{{$data->no_usulan}}</td>
+                            <td>{{getTfi($data->tgl_usulan)}}</td>
+                            <td>{{$data->perihal_usulan}}</td>
+                            <td style="text-align:right">{{getNumber($data->jum)}}</td>
+                            <td>
+                                <a href="{{url('usulan/detail/'.$data->id_usulan.'')}}" class="btn btn-primary btn-sm"><i class="fa fa-loop"></i> Detail</a>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
             

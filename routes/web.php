@@ -76,10 +76,23 @@ Route::group(['middleware' => ['web','auth','level:2', 'status:1']], function(){
 
 	//route untuk membuat usulan
 	Route::get('usulan/', array('as'=>'usulan', 'uses'=>'UsulanController@index'));
-	Route::get('tambahUsulan/', array('as'=>'tambahUsulan', 'uses'=>'UsulanController@tambah'));
-	Route::post('usulan/prosesTambah/', array('as'=>'prosesTambah', 'uses'=>'UsulanController@prosesTambah'));
-	Route::get('tambahItemBarang/{id}', array('as'=>'addItem', 'uses'=>'UsulanController@addItem'));
 	Route::get('usulan/draftUsulan/{tahun}', array('as'=>'draftUsulan', 'uses'=>'UsulanController@draftUsulan'));
+	Route::get('tambahUsulan/', array('as'=>'tambahUsulan', 'uses'=>'UsulanController@tambah'));
+	Route::get('editUsulan/{id}', array('as'=>'editUsulan', 'uses'=>'UsulanController@edit'));
+	Route::post('usulan/prosesTambah/', array('as'=>'prosesTambah', 'uses'=>'UsulanController@prosesTambah'));
+	Route::post('usulan/prosesEdit/{id}', array('as'=>'prosesEdit', 'uses'=>'UsulanController@prosesEdit'));
+	Route::get('tambahItemBarang/{id}', array('as'=>'addItem', 'uses'=>'UsulanController@addItem'));
+	
+	Route::post('usulan/tambahLampiran/{id}', array('as'=>'uploadLampiran', 'uses'=>'UsulanController@uploadLampiran'));
+	Route::get('hapusLampiran/{id}/{idFile}', array('as'=>'uploadLampiran', 'uses'=>'UsulanController@hapusLampiran'));
+	Route::post('usulan/tambahBarang/{id}', array('as'=>'tambahBarang', 'uses'=>'UsulanController@tambahBarang'));
+	Route::post('usulan/editBarang/{id}/{id_usulan}', array('as'=>'editBarang', 'uses'=>'UsulanController@editBarang'));
+	Route::get('usulan/hapusBarang/{idBarang}/{idUsulan}', array('as'=>'hapusBarang', 'uses'=>'UsulanController@hapusBarang'));
+
+	Route::get('usulan/detail/{id}', array('as'=>'detail', 'uses'=>'UsulanController@detail'));
+	Route::get('usulan/kirim/{id}', array('as'=>'kirim', 'uses'=>'UsulanController@kirim'));
+
+	
 });
 
 //route untuk Actor penelaah

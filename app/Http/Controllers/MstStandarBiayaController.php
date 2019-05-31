@@ -58,7 +58,7 @@ class MstStandarBiayaController extends Controller
         
         $file = $request->file;
         $name = 'SB-'.$request->nama_barang.'_'.$file->getClientOriginalName();
-        $path = $file->storeAs('public/standar_biaya', $name);
+        $path = $file->storeAs('public/standar_biaya/', $name);
 
         $standar = new StandarBiaya();
         $standar->tahun = $tahun;
@@ -113,7 +113,7 @@ class MstStandarBiayaController extends Controller
             $name = 'SB-'.$request->nama_barang.'_'.$file->getClientOriginalName();
             $oldFile = StandarBiaya::find($request->id_sb)['lampiran'];
             Storage::delete('public/standar_biaya/'.$oldFile);
-            $path = $file->storeAs('public/standar_biaya', $name);
+            $path = $file->storeAs('public/standar_biaya/', $name);
 
             $standar = StandarBiaya::find($request->id_sb);
             $standar->id_master_barang = $request->nama_barang;
