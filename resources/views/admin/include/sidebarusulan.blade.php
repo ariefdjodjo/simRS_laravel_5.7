@@ -23,7 +23,7 @@
               <ul class="treeview-menu">
                 <li><a href="{{{URL::to('tambahUsulan/')}}}"><i class="fa fa-plus"></i> Tambah Usulan </a></li>
                 <li><a href="{{{URL::to('usulan/draftUsulan/0')}}}"><i class="fa fa-file-o"></i> Draft Usulan </a></li>
-                <li><a href="{{{URL::to('usulan/')}}}"><i class="fa fa-list"></i> Daftar Usulan </a></li>
+                <li><a href="{{{URL::to('usulan/dataUsulan/0')}}}"><i class="fa fa-list"></i> Daftar Usulan </a></li>
               </ul>
             </li>
             <li class="active treeview">
@@ -31,8 +31,8 @@
                 <i class="fa fa-dashboard"></i> <span>Laporan</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href=""><i class="fa fa-copy"></i> Rekap Usulan </a></li>
-                <li><a href=""><i class="fa fa-file-excel-o"></i> Eksport Data Usulan </a></li>
+                <li><a href="{{{URL::to('rekapUsulan/0')}}}"><i class="fa fa-copy"></i> Rekap Usulan </a></li>
+              <!--  <li><a href="{{{URL::to('eksportUsulan/')}}}"><i class="fa fa-file-excel-o"></i> Eksport Data Usulan </a></li> -->
               </ul>
             </li>
             <li class="active treeview">

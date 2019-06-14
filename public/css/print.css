@@ -1,0 +1,118 @@
+body {
+	color : #000000;
+	background : #ffffff;
+	font-family : arial;
+	font-size : 12pt;
+	margin : 2cm 2cm 2cm 2cm;
+}
+
+*{
+font-family: Arial;
+margin:0px;
+padding:0px;
+}
+
+@page {
+ margin-left:3cm 2cm 2cm 2cm;
+}
+
+hr {
+  border-top:1px solid warnaGelap;
+  border-bottom: 1px solid warnaLebihTerang;
+}
+
+table.biasa{
+
+}
+
+
+/* table biasa */
+table.biasa tr td{
+padding-top:0.2mm;
+padding-bottom:0.2mm;
+padding-left:2mm;
+padding-right:2mm;
+}
+
+
+
+table.grid{
+border-collapse:collapse;
+}
+
+table.grid th{
+padding-top:1mm;
+padding-bottom:1mm;
+
+}
+
+table.grid th{
+background: #F0F0F0;
+border-right: 1px solid;
+border-left: 1px solid;
+border-bottom: 1px solid;
+border-top: 1px solid;
+text-align:center;
+padding-left:0.2cm;
+padding-right:0.2cm;
+}
+
+table.grid tr td{
+padding-top:1mm;
+padding-bottom:1mm;
+padding-left:2mm;
+padding-right:2mm;
+border-right: 1px solid;
+border-bottom: 1px solid;
+border-top: 1px solid;
+border-left: 1px solid;
+}
+
+h1{
+font-size: 18pt;
+padding: 0.0mm;
+margin: 0;
+}
+
+h2{
+font-size: 14pt;
+padding: 0.0mm;
+margin: 0;
+}
+
+.header{
+display: block;
+width:27.5cm ;
+margin-bottom: 0.3cm;
+text-align: center;
+}
+
+.attr{
+font-size:12pt;
+width: 27.5cm;
+padding-top:2pt;
+padding-bottom:2pt;
+border-top: 0.2mm solid #000;
+border-bottom: 0.2mm solid #000;
+}
+
+.pagebreak {
+page-break-after: auto;
+}
+.dl-horizontal dt{
+	float:left;
+	width:80px;
+	overflow:hidden;
+	clear:left;
+	text-align:left;
+	padding-left: 15px;
+	text-overflow:ellipsis;white-space:nowrap
+	}
+
+.dl-horizontal dd{margin-left:100px}
+.dl-horizontal dd:before,
+.dl-horizontal dd:after{display:table;content:" "}
+.dl-horizontal dd:after{clear:both}
+.dl-horizontal dd:before,
+.dl-horizontal dd:after{display:table;content:" "}
+.dl-horizontal dd:after{clear:both}}

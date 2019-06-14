@@ -24,7 +24,7 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu collapse">
-                <li><a href="{{{URL::to('unitKerja/create')}}}"><i class="fa fa-file-text"></i> Data Usulan Masuk</a></li>
+                <li><a href="{{{URL::to('telaah/usulanMasuk/0')}}}"><i class="fa fa-file-text"></i> Data Usulan Masuk</a></li>
                 <li><a href="{{{URL::to('unitKerja/data')}}}"><i class="fa fa-bar-chart"></i> Proses Telaah</a></li>
                 <li><a href="{{{URL::to('unitKerja/data')}}}"><i class="fa fa-list"></i> Daftar Telaah</a></li>
                 <li><a href="{{{URL::to('unitKerja/data')}}}"><i class="fa fa-file-o"></i> Laporan</a></li>

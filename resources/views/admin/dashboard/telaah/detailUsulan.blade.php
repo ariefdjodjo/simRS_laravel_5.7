@@ -18,11 +18,12 @@
     $urut_barang = 1;
     $total = 0;
 ?>
+
 <div class="box">
     <h3 align="center"><b>DATA USULAN PENGADAAN</b></h3>
-    <hr>
-    <div class="pull-right"><a href="" class="btn btn-warning">Selesai</a></div>
+    <br>
 </div>
+
 <div class="box box-solid box-primary">
     <div class="box-header">
         DATA USULAN
@@ -115,14 +116,6 @@
     </div>
 </div>
 
-@if($usulan->tgl_kirim == NULL)
-    <div class="box box-primary">
-        <div class="pull-right">
-            <a href="{{{URL::to('tambahItemBarang/'.$usulan->id_usulan)}}}" class="btn btn-primary"><i class="fa fa-edit"></i>Edit</a>
-            <a href="{{{URL::to('usulan/kirim/'.$usulan->id_usulan)}}}" class="btn btn-warning"><i class="fa fa-inbox"></i> Kirim</a>
-        </div>
-        <br><br>
-    </div>
-@endif
+<iframe src="{{URL::to('/telaah/pdfUsulan/'.$usulan->id_usulan)}}" frameborder="solid" width="100%" height="1000px"></iframe>
 
 @endsection

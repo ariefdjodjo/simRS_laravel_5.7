@@ -9,6 +9,7 @@ use Validator;
 use Storage;
 use Mail;
 use App\Usulan as Usulan;
+use App\Mail\SentMail;
 use App\TtdUsulan as TtdUsulan;
 use App\RkaklTahun as Tahun;
 use App\UsulanLampiran as Lampiran;
@@ -18,6 +19,8 @@ use App\MstBarang as MstBarang;
 
 class UsulanController extends Controller
 {
+    public $kode;
+
     public function index(){
 
     }
@@ -281,22 +284,77 @@ class UsulanController extends Controller
     }
 
     public function kirim($id){
-        try{
-            Mail::send('admin.dashboard.usulan.mail', array(['name' => "Arief Gunawan", 'pesan' => "Pesannya coba"]), function ($message) {
-                $message->subject("Judulnya");
-                $message->from('arief.djodjo1988@gmail.com');
-                $message->to('arief.djodjo@gmail.com');
-            });
+        $datanya = Usulan::find($id);
+        $data = array(
+            'email' => 'arief.djodjo1988@gmail.com',
+            'no_usulan' => $datanya->no_usulan,
+            'tgl_usulan' => $datanya->tgl_usulan
+        );
 
-            return Redirect('tambahItemBarang/'.$id);
-        }
-        catch (Exception $e){
-            
-        }
-        
+        Mail::send('admin.dashboard.usulan.mail', $data, 
+            function($message) use ($data) {
+                $message->from($data['email']);
+                $message->to('arief.djodjo@gmail.com')->subject($data['no_usulan']);
+            }
+        );
+
+        return back()->with('Success', "terima kasih");
     }
     
+    protected function dataUsulan($tahun){
+        $id_unit = Auth::user()->id_unit_kerja;
+
+        $th = Tahun::all();
+
+        $usulan = DB::table('usulan')
+            ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
+            ->where('usulan.tahun', '=', $tahun)
+            ->where('usulan.id_unit_kerja', '=', $id_unit)
+            ->where('usulan.tgl_kirim', '!=', NULL)
+            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum, usulan.no_usulan, usulan.tgl_usulan, usulan.perihal_usulan, usulan_barang.jumlah_usulan, usulan.id_usulan'))
+            ->groupBy('usulan_barang.id_usulan', 'usulan.no_usulan', 'usulan.tgl_usulan', 'usulan.perihal_usulan', 'usulan_barang.jumlah_usulan', 'usulan.id_usulan')
+            ->get();
+
+        return view('admin.dashboard.usulan.dataUsulan',compact('tahun', 'th', 'usulan','detail'));
+    }
+
+    protected function rekap($tahun){
+        $id_unit = Auth::user()->id_unit_kerja;
+        $th      = Tahun::all();
+        
+        /** 
+        $jenis = DB::table('usulan')
+            ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
+            ->where('usulan.tahun', '=', $tahun)
+            ->where('usulan.id_unit_kerja', '=', $id_unit)
+            ->where('usulan.tgl_kirim', '!=', NULL)
+            ->select(DB::raw('usulan.jenis_usulan, sum(usulan_barang.jumlah_usulan) as jum_jenis'))
+            ->groupBy('usulan.jenis_usulan')
+            ->get();
+        
+        $data_jenis = array(
+            'kode' => $jenis->jenis_usulan,
+            'jum'  => $jenis->jum_jenis
+        );
+        **/
+
+        $usulan = DB::table('usulan')
+            ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
+            ->where('usulan.tahun', '=', $tahun)
+            ->where('usulan.id_unit_kerja', '=', $id_unit)
+            ->where('usulan.tgl_kirim', '!=', NULL)
+            ->select(DB::raw('usulan.jenis_usulan, sum(usulan_barang.jumlah_usulan) as jum_usulan', 'usulan.jenis_usulan'))
+            ->groupBy( 'usulan.jenis_usulan')
+            ->get();
+
+        return view('admin.dashboard.usulan.rekapUsulan',compact('tahun', 'th', 'data_jenis', 'usulan','detail'));
+    }
+
+    protected function detailRekap($tahun, $id) {
+
+    }
+
+    protected function eksportUsulan($tahun){
+        return view('admin.dashboard.usulan.eksportUsulan',compact('tahun'));
+    }
 }
-
-
-

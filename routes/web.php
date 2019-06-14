@@ -77,6 +77,7 @@ Route::group(['middleware' => ['web','auth','level:2', 'status:1']], function(){
 	//route untuk membuat usulan
 	Route::get('usulan/', array('as'=>'usulan', 'uses'=>'UsulanController@index'));
 	Route::get('usulan/draftUsulan/{tahun}', array('as'=>'draftUsulan', 'uses'=>'UsulanController@draftUsulan'));
+	Route::get('usulan/dataUsulan/{tahun}', array('as'=>'dataUsulan', 'uses'=>'UsulanController@dataUsulan'));
 	Route::get('tambahUsulan/', array('as'=>'tambahUsulan', 'uses'=>'UsulanController@tambah'));
 	Route::get('editUsulan/{id}', array('as'=>'editUsulan', 'uses'=>'UsulanController@edit'));
 	Route::post('usulan/prosesTambah/', array('as'=>'prosesTambah', 'uses'=>'UsulanController@prosesTambah'));
@@ -91,6 +92,9 @@ Route::group(['middleware' => ['web','auth','level:2', 'status:1']], function(){
 
 	Route::get('usulan/detail/{id}', array('as'=>'detail', 'uses'=>'UsulanController@detail'));
 	Route::get('usulan/kirim/{id}', array('as'=>'kirim', 'uses'=>'UsulanController@kirim'));
+
+	Route::get('rekapUsulan/{tahun}', array('as'=>'rekap', 'uses'=>'UsulanController@rekap'));
+	Route::get('eksportUsulan/{tahun}', array('as'=>'eksport', 'uses'=>'UsulanController@eksportUsulan'));
 
 	
 });
@@ -117,6 +121,14 @@ Route::group(['middleware' => ['web','auth','level:3', 'status:1']], function(){
 	Route::get('standarBiaya/edit/{tahun}/{id}', array('as'=>'MasterStandarBiayaEdit', 'uses'=>'MstStandarBiayaController@edit'));
 	Route::post('standarBiaya/prosesEdit/{tahun}', array('as'=>'MasterStandarBiayaEdit', 'uses'=>'MstStandarBiayaController@prosesEdit'));
 	Route::get('standarBiaya/hapus/{tahun}/{id}', array('as'=>'MasterStandarBiayaHapus', 'uses'=>'MstStandarBiayaController@hapus'));
+
+	//telaah masuk
+	Route::get('telaah/usulanMasuk/{tahun}', array('as'=>'usulanMasuk', 'uses'=>'TelaahController@usulanMasuk'));
+	Route::get('telaah/baca/{id}', array('as'=>'baca', 'uses'=>'TelaahController@baca'));
+	Route::get('telaah/detailUsulan/{id}', array('as'=>'detailUsulan', 'uses'=>'TelaahController@detailUsulan'));
+
+	//pdf
+	Route::get('telaah/pdfUsulan/{id}', array('as'=>'pdfUsulan', 'uses'=>'TelaahController@pdfUsulan'));
 });
 
 //route untuk Actor spp
