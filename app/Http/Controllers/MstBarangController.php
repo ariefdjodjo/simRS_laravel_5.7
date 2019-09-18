@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use Auth;
 use DB;
 use App\MstBarang as MstBarang;
@@ -10,7 +11,13 @@ use App\MstBarang as MstBarang;
 class MstBarangController extends Controller
 {
     public function index() {
-        $data   = MstBarang::all();
+        $data   = DB::table('ref_master_barang')->select('kode_jenis_barang', DB::raw('count(*) as jum'))->groupby('kode_jenis_barang')->get();
+
+        return view('admin.dashboard.telaah.jenisBarang',compact('data'));
+    }
+
+    public function detailMaster($jenis) {
+        $data   = MstBarang::where('kode_jenis_barang', '=', $jenis)->get();
 
         return view('admin.dashboard.telaah.masterBarang',compact('data'));
     }
@@ -23,7 +30,7 @@ class MstBarangController extends Controller
         $data->satuan               = $request->satuan;
         $data->save();
 
-        return Redirect('masterBarang/');
+        return back()->with(getNotif('Data '.$data->nama_barang.' berhasil ditambahkan', 'success'));
     }
 
     public function edit(request $request, $id) {
@@ -34,15 +41,15 @@ class MstBarangController extends Controller
         $data->satuan               = $request->satuan;
         $data->update();
 
-        return Redirect('masterBarang/');
+        return back()->with(getNotif('Data '.$data->nama_barang.' berhasil di ubah', 'success'));
     }
 
     public function hapus($id) {
         $data = MstBarang::WHERE('id_master_barang', '=', $id);
     	if($data == null) 
-            app::abort(404);
+        return back()->with(getNotif('Data tidak dapat dihapus', 'error'));
         $data->delete();
 
-        return Redirect('masterBarang/');
+        return back()->with(getNotif('Data berhasil dihapus', 'success'));
     }
 }

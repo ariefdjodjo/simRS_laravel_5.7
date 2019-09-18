@@ -3,17 +3,17 @@ body {
 	background : #ffffff;
 	font-family : arial;
 	font-size : 12pt;
-	margin : 2cm 2cm 2cm 2cm;
+	margin : 1.5cm 1cm 2cm 1cm;
 }
 
 *{
-font-family: Arial;
-margin:0px;
-padding:0px;
+	font-family: Arial;
+	margin:0px;
+	padding:0px;
 }
 
 @page {
- margin-left:3cm 2cm 2cm 2cm;
+ margin:2cm 2cm 2cm 2cm;
 }
 
 hr {
@@ -80,6 +80,9 @@ padding: 0.0mm;
 margin: 0;
 }
 
+p{
+	padding: 10px;
+}
 .header{
 display: block;
 width:27.5cm ;

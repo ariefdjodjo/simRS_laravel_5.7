@@ -10,5 +10,5 @@ class Email extends Model
     public $timestamps = false;
     protected $primaryKey = "id_email";
 
-    protected $fillable = ['level_user', 'alamat_email'];
+    protected $fillable = ['id_email', 'level_user', 'alamat_email'];
 }

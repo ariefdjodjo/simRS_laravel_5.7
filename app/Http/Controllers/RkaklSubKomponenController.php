@@ -1,4 +1,7 @@
 <?php
+/**
+ * Controller untuk sub komponen
+ */
 
 namespace App\Http\Controllers;
 

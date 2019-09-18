@@ -37,6 +37,9 @@
     <script type="text/javascript" src="{{ URL::asset('selectize/selectize.js')}}"></script>
     <script type="text/javascript" src="{{ URL::asset('selectize/validjs.js')}}"></script>
     <link href="{{URL::asset('selectize/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css">
+    <!-- notifikasi -->
+    <link href="{{URL::asset('admin/plugins/toastr/build/toastr.min.css')}}"  rel="stylesheet"  type="text/css" >
+
     <!-- bikin script base_url untuk dipanggil dari javascript -->
     <meta name="base_url" content="{{ URL::to('/') }}">
   </head>
@@ -75,6 +78,8 @@
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
 
+
+
       @include('admin.include.footer')
     
    <script src="{{ URL::asset('admin/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>    
@@ -108,6 +113,49 @@
 <script src="{{ URL::asset('admin/plugins/select2/select2.js') }}"></script>
 <script src="{{ URL::asset('admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('admin/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+<script src="{{ URL::asset('admin/plugins/toastr/build/toastr.min.js') }}"></script>
 
+  <script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": true,
+        "newestOnTop": true,
+        "progressBar": false,
+        "positionClass": "toast-bottom-full-width",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "0",
+        "hideDuration": "0",
+        "timeOut": "3000",
+        "extendedTimeOut": "3000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+  @if(Session::has('message'))
+  var typenya = "{{ Session::get('type', 'info') }}";
+
+  switch(typenya){
+        case 'info':
+        toastr.info("{{Session::get('message')}}");
+        break;
+
+        case 'success':
+        toastr.success("{{Session::get('message')}}");
+        break;
+
+        case 'warning':
+        toastr.warning("{{Session::get('message')}}");
+        break;
+
+        case 'error':
+        toastr.error("{{Session::get('message')}}");
+        break;
+      }
+      
+    @endif      
+  </script>
   </body>
 </html>

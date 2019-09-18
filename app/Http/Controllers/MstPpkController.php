@@ -28,7 +28,7 @@ class MstPpkController extends Controller
     	$ppk->akhir_berlaku	= $request->akhir_berlaku;
     	$ppk->save();
 
-    	return Redirect('mstPpk/');
+    	return Redirect('mstPpk/')->with(getNotif('Data berhasil ditambahkan', 'success'));
 
     }
 
@@ -37,7 +37,7 @@ class MstPpkController extends Controller
     	$ppk->status_ppk = $request->status;
     	$ppk->update();
 
-    	return Redirect('mstPpk/');
+    	return Redirect('mstPpk/')->with(getNotif('Data berhasil di Ubah', 'success'));
     }
 
     public function edit(request $request, $id){
@@ -50,7 +50,7 @@ class MstPpkController extends Controller
     	$ppk->akhir_berlaku	= $request->akhir_berlaku;
     	$ppk->update();
 
-    	return Redirect('mstPpk/');
+    	return Redirect('mstPpk/')->with(getNotif('Data berhasil diUbah', 'success'));
 
     }
 
@@ -59,6 +59,6 @@ class MstPpkController extends Controller
     	if($ppk == null) 
             app::abort(404);
         $ppk->delete();
-        return Redirect('mstPpk/');
+        return Redirect('mstPpk/')->with(getNotif('Data berhasil dihapus', 'success'));
     }
 }

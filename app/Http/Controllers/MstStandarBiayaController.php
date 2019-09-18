@@ -57,8 +57,12 @@ class MstStandarBiayaController extends Controller
         }
         
         $file = $request->file;
-        $name = 'SB-'.$request->nama_barang.'_'.$file->getClientOriginalName();
-        $path = $file->storeAs('public/standar_biaya/', $name);
+        if($file == ""){
+            $name = NULL;
+        } else {
+            $name = 'SB-'.$request->nama_barang.'_'.$file->getClientOriginalName();
+            $path = $file->storeAs('public/standar_biaya/', $name);
+        }
 
         $standar = new StandarBiaya();
         $standar->tahun = $tahun;
@@ -109,6 +113,7 @@ class MstStandarBiayaController extends Controller
         }
         
         $file = $request->file;
+
         if($file != ""){
             $name = 'SB-'.$request->nama_barang.'_'.$file->getClientOriginalName();
             $oldFile = StandarBiaya::find($request->id_sb)['lampiran'];
@@ -132,7 +137,7 @@ class MstStandarBiayaController extends Controller
             $standar->dasar_harga = $request->dasar;
             $standar->update();
         }
-        return Redirect('standarBiaya/'.$tahun);
+        return Redirect('standarBiaya/'.$tahun)->with(getNotif('Data berhasil di ubah', 'success'));
     }
 
     public function hapus($tahun, $id){

@@ -29,6 +29,9 @@ class SentMail extends Mailable
      */
     public function build()
     {
-        return $this->from('arief.djodjo1988@gmail.com')->subject('Coba')->view('admin.dashboard.usulan.mail')->with('data', $this->data);
+        return $this->from('arief.djodjo1988@gmail.com')
+            ->subject('Coba')
+            ->view('admin.dashboard.usulan.mail')
+            ->with('data', $this->data);
     }
 }

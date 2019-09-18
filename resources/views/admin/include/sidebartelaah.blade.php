@@ -16,16 +16,27 @@
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION TELAAH</li>
-                        
             <li class="treeview active">
               <a href="#">
                 <i class="fa fa-pie-chart"></i>
-                <span>Proses Telaah</span>
+                <span>Usulan Unit Kerja</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu collapse">
-                <li><a href="{{{URL::to('telaah/usulanMasuk/0')}}}"><i class="fa fa-file-text"></i> Data Usulan Masuk</a></li>
-                <li><a href="{{{URL::to('unitKerja/data')}}}"><i class="fa fa-bar-chart"></i> Proses Telaah</a></li>
+                <li><a href="{{{URL::to('telaah/usulanMasuk/0/0')}}}"><i class="fa fa-folder"></i> Usulan Unit Kerja</a></li>
+                <li><a href="{{{URL::to('unitKerja/data')}}}"><i class="fa fa-folder-open-o"></i> Rekap Usulan</a></li>
+              </ul>
+            </li>
+
+            <li class="treeview active">
+              <a href="#">
+                <i class="fa fa-pie-chart"></i>
+                <span>Telaah</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu collapse">
+                <li><a href="{{{URL::to('telaah/tambahTelaah')}}}"><i class="fa fa-plus"></i> Tambah Telaah</a></li>
+                <li><a href="{{{URL::to('unitKerja/data')}}}"><i class="fa fa-bar-chart"></i> Draft Telaah</a></li>
                 <li><a href="{{{URL::to('unitKerja/data')}}}"><i class="fa fa-list"></i> Daftar Telaah</a></li>
                 <li><a href="{{{URL::to('unitKerja/data')}}}"><i class="fa fa-file-o"></i> Laporan</a></li>
               </ul>

@@ -123,6 +123,13 @@
         </div>
         <br><br>
     </div>
+@else
+    <div class="box box-primary">
+        <div class="pull-right">
+            <a href="{{{URL::to('telaah/pdfUsulan/'.$usulan->id_usulan)}}}" class="btn btn-success" target="blank"><i class="fa fa-print"></i>Cetak</a>
+        </div>
+        <br><br>
+    </div>
 @endif
 
 @endsection

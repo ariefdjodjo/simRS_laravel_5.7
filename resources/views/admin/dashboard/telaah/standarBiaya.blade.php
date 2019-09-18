@@ -70,7 +70,11 @@
                     <td style="text-align:right">{{{getNumber($data->harga_satuan)}}}</td>
                     <td>{{{$data->dasar_harga}}}</td>
                     <td style="text-align:center">
+                        @if($data->lampiran == NULL) 
+                            {{-- //jika kosong --}}
+                        @else
                         <a href="{{asset('storage/standar_biaya/'.$data->lampiran)}}" class="btn btn-sm btn-success"><i class="fa fa-download"></i> Download</a>
+                        @endif
                     </td>
                     <td>
                     <div class="btn-group">

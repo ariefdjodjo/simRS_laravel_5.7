@@ -12,45 +12,57 @@ use App\Usulan as Usulan;
 use App\Mail\SentMail;
 use App\TtdUsulan as TtdUsulan;
 use App\RkaklTahun as Tahun;
+use App\MstUnitKerja as UnitKerja;
 use App\UsulanLampiran as Lampiran;
 use App\UsulanBarang as Barang;
 use App\MstBarang as MstBarang;
+use App\Email as Email;
 
 
-class UsulanController extends Controller
-{
+class UsulanController extends Controller {
     public $kode;
 
+    /* fungsi index */
     public function index(){
 
     }
 
     public function tambah() {
         $id_user = Auth::user()->id;
+        
         $id_unit = Auth::user()->id_unit_kerja;
-        $tahun      = Tahun::all();
+        
+        $tahun   = Tahun::all();
+
+        $satker     = UnitKerja::find($id_unit);
+        
         $pengirim = TtdUsulan::where('id_unit_kerja', '=', $id_unit)->get();
 
 
-        return view('admin.dashboard.usulan.formUsulan1',compact('id_user', 'pengirim', 'tahun'));
+        return view('admin.dashboard.usulan.formUsulan1',compact('id_user', 'pengirim', 'tahun', 'satker'));
     }
 
-    public function edit($id) {
+    public function edit($id) { 
         $id_user = Auth::user()->id;
+        
         $id_unit = Auth::user()->id_unit_kerja;
+        
         $tahun      = Tahun::all();
+       
         $pengirim = TtdUsulan::where('id_unit_kerja', '=', $id_unit)->get();
+        
         $usulan = Usulan::join('ref_ttd_usulan', 'ref_ttd_usulan.id_ttd_usulan', '=', 'usulan.pengirim_usulan')
             ->where('usulan.id_usulan', '=', $id)
             ->where('usulan.id_unit_kerja', '=', $id_unit)
             ->first();
 
-        return view('admin.dashboard.usulan.editUsulan',compact('id_user', 'pengirim', 'tahun', 'usulan', 'id'));
+        return view('admin.dashboard.usulan.editUsulan', compact('id_user', 'pengirim', 'tahun', 'usulan', 'id'));
     }
 
-    public function prosesTambah(request $request) {
+    public function prosesTambah(request $request){ 
         $input 	= $request->all();
-		$pesan 	= array(
+        
+        $pesan 	= array(
             'file.mimes' => 'File dalam format .PDF , .xlsx, .xls, .doc, .docx',
             'file.max' => 'Maksimal 10 MB'
 		);
@@ -60,7 +72,7 @@ class UsulanController extends Controller
             'file' => 'max:10000'
 		);
 
-		$validasi = Validator::make($input,$aturan, $pesan);
+		$validasi = Validator::make($input, $aturan, $pesan);
 
 		if ($validasi->fails()) {
             return redirect('tambahUsulan/')
@@ -246,23 +258,34 @@ class UsulanController extends Controller
 
         $barang     = DB::table('usulan_barang')->where('id_usulan', '=', $id)->get();
 
-        $mstBarang  = DB::table('ref_master_barang')->where('kode_jenis_barang', '=', $usulan->jenis_usulan)->get();
+        $mstBarang  = DB::table('ref_master_barang')->select('id_master_barang','nama_barang')->where('kode_jenis_barang', '=', $usulan->jenis_usulan)->get();
         
         return view('admin.dashboard.usulan.formUsulan2',compact('usulan','lampiran', 'barang', 'mstBarang'));
+    }
+
+    public function loadBarang($id_barang) {
+        $mstBarang = MstBarang::find($id_barang);
+
+        return response()->json([
+            'kode' => $mstBarang->id_master_barang,
+            'nama' => $mstBarang->nama_barang,
+            'spesifikasi' => $mstBarang->spesifikasi,
+            'satuanBarang' => "<option value='".$mstBarang->satuan."' selected>".$mstBarang->satuan."</option>",
+        ]);
     }
 
     public function draftUsulan($tahun) {
         $id_unit = Auth::user()->id_unit_kerja;
 
         $th = Tahun::all();
-
+       /*  $usulan = Usulan::where('usulan.tahun', '=', $tahun)->get(); */
         $usulan = DB::table('usulan')
-            ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
+            ->rightjoin('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
+            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum, usulan.no_usulan, usulan.tgl_usulan, usulan.perihal_usulan, usulan.id_usulan'))
             ->where('usulan.tahun', '=', $tahun)
             ->where('usulan.id_unit_kerja', '=', $id_unit)
             ->where('usulan.tgl_kirim', '=', NULL)
-            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum, usulan.no_usulan, usulan.tgl_usulan, usulan.perihal_usulan, usulan_barang.jumlah_usulan, usulan.id_usulan'))
-            ->groupBy('usulan_barang.id_usulan', 'usulan.no_usulan', 'usulan.tgl_usulan', 'usulan.perihal_usulan', 'usulan_barang.jumlah_usulan', 'usulan.id_usulan')
+            ->groupBy('usulan.id_usulan', 'usulan.no_usulan', 'usulan.tgl_usulan', 'usulan.perihal_usulan', 'usulan_barang.id_usulan')
             ->get();
 
         return view('admin.dashboard.usulan.draftUsulan',compact('tahun', 'th', 'usulan'));
@@ -284,21 +307,36 @@ class UsulanController extends Controller
     }
 
     public function kirim($id){
-        $datanya = Usulan::find($id);
+        $datanya    = DB::table('usulan')
+            ->join('mst_unit_kerja', 'usulan.id_unit_kerja', '=', 'mst_unit_kerja.id_unit_kerja')
+            ->where('usulan.id_usulan', '=', $id)->first();
+        $tujuannya = DB::table('ref_email')->where('level_user', '=', 3)->first();
+
         $data = array(
-            'email' => 'arief.djodjo1988@gmail.com',
+            'tujuan' => $tujuannya->alamat_email,
             'no_usulan' => $datanya->no_usulan,
+            'perihal' => $datanya->perihal_usulan,
+            'pengirim' => $datanya->nama_unit_kerja,
             'tgl_usulan' => $datanya->tgl_usulan
         );
 
-        Mail::send('admin.dashboard.usulan.mail', $data, 
-            function($message) use ($data) {
-                $message->from($data['email']);
-                $message->to('arief.djodjo@gmail.com')->subject($data['no_usulan']);
-            }
-        );
+        try{
+            Mail::send('admin.dashboard.usulan.mail', $data, function($message) use ($data) {
+                $message->to($data['tujuan'])->subject('Usulan Pengadaan No.'.$data['no_usulan']);
+                $message->from('anggaran.sardjito@gmail.com','Sistem Monev Anggaran');
+            });
+        } catch(Exception $e) {
+            return back()->with('Gagal', "terima kasih"); 
+        }
+        
+        $tgl = date('Y-m-d');
 
-        return back()->with('Success', "terima kasih");
+        $update = Usulan::find($id);
+        $update->tgl_kirim = $tgl;
+        $update->update();
+
+        return back()->with('Success', "terima kasih"); 
+		
     }
     
     protected function dataUsulan($tahun){
@@ -311,8 +349,8 @@ class UsulanController extends Controller
             ->where('usulan.tahun', '=', $tahun)
             ->where('usulan.id_unit_kerja', '=', $id_unit)
             ->where('usulan.tgl_kirim', '!=', NULL)
-            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum, usulan.no_usulan, usulan.tgl_usulan, usulan.perihal_usulan, usulan_barang.jumlah_usulan, usulan.id_usulan'))
-            ->groupBy('usulan_barang.id_usulan', 'usulan.no_usulan', 'usulan.tgl_usulan', 'usulan.perihal_usulan', 'usulan_barang.jumlah_usulan', 'usulan.id_usulan')
+            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum, usulan.no_usulan, usulan.tgl_usulan, usulan.perihal_usulan, usulan.id_usulan'))
+            ->groupBy('usulan_barang.id_usulan', 'usulan.no_usulan', 'usulan.tgl_usulan', 'usulan.perihal_usulan', 'usulan.id_usulan')
             ->get();
 
         return view('admin.dashboard.usulan.dataUsulan',compact('tahun', 'th', 'usulan','detail'));

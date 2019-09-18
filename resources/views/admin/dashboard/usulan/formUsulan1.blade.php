@@ -44,7 +44,9 @@
                 <option value="5203">Barang Rumah Tangga</option>
                 <option value="5204">Perbekalan Obat</option>
                 <option value="5205">AMHP/BMHP</option>
-                <option value="5206">Jasa</option>
+                <option value="5206">Belanja Operasional</option>
+                <option value="5207">Jasa</option>
+                <option value="5208">Bahan Makanan</option>
                 <option value="5301">Investasi Alat Kesehatan</option>
                 <option value="5302">Investasi Alat Non Kesehatan</option>
                 <option value="5303">Investasi Perangkat Pengolah Data</option>
@@ -80,7 +82,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label" for="no_usulan">Nomor Usulan</label>  
             <div class="col-md-4">
-            <input id="no_usulan" name="no_usulan" type="text" placeholder="Nomor Usulan" class="form-control input-md" required="" >
+            <input id="no_usulan" name="no_usulan" type="text" placeholder="Nomor Usulan" value="KR.02.01/{{$satker->kode_agenda_satker}}/" class="form-control input-md" required="" >
             <span class="help-block"></span>  
             </div>
           </div>
@@ -89,7 +91,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label" for="tgl_usulan">Tanggal Usulan</label>  
             <div class="col-md-2">
-            <input id="tgl_usulan" name="tgl_usulan" type="text" placeholder="Tanggal Usulan" class="form-control input-md datepicker" required="">
+            <input id="tgl_usulan" name="tgl_usulan" value="{{getNow()}}" type="text" placeholder="Tanggal Usulan" class="form-control input-md datepicker" required="">
             <span class="help-block"></span>  
             </div>
           </div>
@@ -129,11 +131,10 @@
           <!-- Select Basic -->
           <div class="form-group">
             <label class="col-md-2 control-label" for="pengirim">Pengirim</label>
-            <div class="col-md-4">
+            <div class="col-md-9">
               <select id="pengirim" name="pengirim" class="form-control">
-                <option value="">Pilih Pengirim</option>
                 @foreach ($pengirim as $data)
-              <option value="{{$data->id_ttd_usulan}}">{{$data->nama_kepala}} - {{$data->jabatan}}</option>
+                  <option value="{{$data->id_ttd_usulan}}">{{$data->nama_kepala}} - {{$data->jabatan}}</option>
                 @endforeach
               </select>
 

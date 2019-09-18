@@ -35,6 +35,11 @@ Route::group(['middleware' => ['web', 'auth']], function()
 	Route::get('email', array('as'=>'Email', 'uses'=>'EmailController@index'));
 	Route::post('email/edit', array('as'=>'editEmail', 'uses'=>'EmailController@edit'));
 
+	//pdf
+	Route::get('telaah/pdfUsulan/{id}', array('as'=>'pdfUsulan', 'uses'=>'TelaahController@pdfUsulan'));
+
+	Route::get('loadBarang/{id_barang}', array('as'=>'loadBarang', 'uses'=>'UsulanController@loadBarang'));
+
 });
 
 //route as actor Administrator
@@ -84,6 +89,7 @@ Route::group(['middleware' => ['web','auth','level:2', 'status:1']], function(){
 	Route::post('usulan/prosesEdit/{id}', array('as'=>'prosesEdit', 'uses'=>'UsulanController@prosesEdit'));
 	Route::get('tambahItemBarang/{id}', array('as'=>'addItem', 'uses'=>'UsulanController@addItem'));
 	
+	
 	Route::post('usulan/tambahLampiran/{id}', array('as'=>'uploadLampiran', 'uses'=>'UsulanController@uploadLampiran'));
 	Route::get('hapusLampiran/{id}/{idFile}', array('as'=>'uploadLampiran', 'uses'=>'UsulanController@hapusLampiran'));
 	Route::post('usulan/tambahBarang/{id}', array('as'=>'tambahBarang', 'uses'=>'UsulanController@tambahBarang'));
@@ -110,6 +116,7 @@ Route::group(['middleware' => ['web','auth','level:3', 'status:1']], function(){
 
 	//Route untuk master barang
 	Route::get('masterBarang/', array('as'=>'MasterBarang', 'uses'=>'MstBarangController@index'));
+	Route::get('masterBarang/detail/{jenis}', array('as'=>'JenisMasterBarang', 'uses'=>'MstBarangController@detailMaster'));
 	Route::post('masterBarang/tambah', array('as'=>'masterBarangTambah', 'uses'=>'MstBarangController@tambah'));
 	Route::post('masterBarang/edit/{id}', array('as'=>'MasterBarangEdit', 'uses'=>'MstBarangController@edit'));
 	Route::post('masterBarang/hapus/{id}', array('as'=>'MasterBarangEdit', 'uses'=>'MstBarangController@hapus'));
@@ -122,13 +129,15 @@ Route::group(['middleware' => ['web','auth','level:3', 'status:1']], function(){
 	Route::post('standarBiaya/prosesEdit/{tahun}', array('as'=>'MasterStandarBiayaEdit', 'uses'=>'MstStandarBiayaController@prosesEdit'));
 	Route::get('standarBiaya/hapus/{tahun}/{id}', array('as'=>'MasterStandarBiayaHapus', 'uses'=>'MstStandarBiayaController@hapus'));
 
-	//telaah masuk
-	Route::get('telaah/usulanMasuk/{tahun}', array('as'=>'usulanMasuk', 'uses'=>'TelaahController@usulanMasuk'));
+	//usulan masuk
+	Route::get('telaah/usulanMasuk/{kriteria}/{tahun}', array('as'=>'usulanMasuk', 'uses'=>'TelaahController@usulanMasuk'));
 	Route::get('telaah/baca/{id}', array('as'=>'baca', 'uses'=>'TelaahController@baca'));
 	Route::get('telaah/detailUsulan/{id}', array('as'=>'detailUsulan', 'uses'=>'TelaahController@detailUsulan'));
 
-	//pdf
-	Route::get('telaah/pdfUsulan/{id}', array('as'=>'pdfUsulan', 'uses'=>'TelaahController@pdfUsulan'));
+	//telaah
+	Route::get('telaah/tambahTelaah/{id}', array('as'=>'tambahTelaah', 'uses'=>'TelaahController@tambahTelaah'));
+	Route::get('telaah/loadUsulan/{tahun}', array('as'=>'loadUsulan', 'uses'=>'TelaahController@loadUsulan'));
+
 });
 
 //route untuk Actor spp

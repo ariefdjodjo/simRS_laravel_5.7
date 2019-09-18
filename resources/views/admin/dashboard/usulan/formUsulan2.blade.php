@@ -304,19 +304,13 @@
                       <tr>
                         <td width="30%"><b>Nama Barang</b></td>
                         <td width="70%">
-                          <select name="nama_barang" id="nama_barang">
+                          <select name="namaBarang" id="namaBarang">
                               <option value="">--Pilih Barang--</option>
                               @foreach ($mstBarang as $barang)
-                                    <option value="{{$barang->nama_barang}}">{{$barang->nama_barang}}</option>
+                                    <option value="{{$barang->id_master_barang}}">{{$barang->nama_barang}}</option>
                               @endforeach
                           </select>
-
-                            <script>
-                                $('#nama_barang').selectize({
-                                 create: true,
-                                 sortField: 'text'
-                                });
-                            </script>
+                          <input type="hidden" name="nama_barang" id="nama_barang" >
                         </td>
                       </tr>
                       <tr>
@@ -355,13 +349,6 @@
                                     <option value="Liter">Liter</option>
                                     <option value="ml">ml</option>
                                 </select>
-                                
-                                <script>
-                                    $('#satuan').selectize({
-                                        create: false,
-                                        sortField: 'text'
-                                    });
-                                </script>
                           </td>
                       </tr>
                       <tr>
@@ -396,6 +383,30 @@
         <!-- /.modal-dialog -->
       </div>
 
+    
+        <script>
+            $('#namaBarang').selectize({
+                create: true,
+                sortField: 'text'
+            });
+
+            $('#namaBarang').change(function(){
+                var id = $('#namaBarang').val();
+                
+                $.get("{{ url('loadBarang')}}/"+id, function(data) {
+                    $('#spesifikasi').val(data.spesifikasi);
+                    $('#nama_barang').val(data.nama);
+                    $('#satuan').html(data.satuanBarang);
+                    $('#satuan').selectize({
+                        create: false,
+                        sortField: 'text'
+                    });
+                });
+
+            });
+
+            
+        </script>
 
 @endsection
 
