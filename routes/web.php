@@ -37,6 +37,7 @@ Route::group(['middleware' => ['web', 'auth']], function()
 
 	//pdf
 	Route::get('telaah/pdfUsulan/{id}', array('as'=>'pdfUsulan', 'uses'=>'TelaahController@pdfUsulan'));
+	Route::get('telaah/pdfTelaah/{id}', array('as'=>'pdfTelaah', 'uses'=>'TelaahController@pdfTelaah'));
 
 	Route::get('loadBarang/{id_barang}', array('as'=>'loadBarang', 'uses'=>'UsulanController@loadBarang'));
 
@@ -100,9 +101,11 @@ Route::group(['middleware' => ['web','auth','level:2', 'status:1']], function(){
 	Route::get('usulan/kirim/{id}', array('as'=>'kirim', 'uses'=>'UsulanController@kirim'));
 
 	Route::get('rekapUsulan/{tahun}', array('as'=>'rekap', 'uses'=>'UsulanController@rekap'));
+	Route::get('rekapUsulan/pdf/{tahun}', array('as'=>'rekap', 'uses'=>'UsulanController@pdfRekap'));
 	Route::get('eksportUsulan/{tahun}', array('as'=>'eksport', 'uses'=>'UsulanController@eksportUsulan'));
 
-	
+	Route::get('rekapDetailUsulan/{tahun}/{jenis}', array('as'=>'rekap', 'uses'=>'UsulanController@rekapDetail'));
+	Route::get('rekapDetailUsulan/pdf/{tahun}/{jenis}', array('as'=>'rekap', 'uses'=>'UsulanController@pdfRekapDetail'));
 });
 
 //route untuk Actor penelaah
@@ -133,11 +136,26 @@ Route::group(['middleware' => ['web','auth','level:3', 'status:1']], function(){
 	Route::get('telaah/usulanMasuk/{kriteria}/{tahun}', array('as'=>'usulanMasuk', 'uses'=>'TelaahController@usulanMasuk'));
 	Route::get('telaah/baca/{id}', array('as'=>'baca', 'uses'=>'TelaahController@baca'));
 	Route::get('telaah/detailUsulan/{id}', array('as'=>'detailUsulan', 'uses'=>'TelaahController@detailUsulan'));
+	Route::get('telaah/rekapUsulan/{tahun}', array('as'=>'detailUsulan', 'uses'=>'TelaahController@rekapUsulan'));
+	Route::get('rekapDetailUsulan/{tahun}/{jenis}', array('as'=>'detailUsulanJenis', 'uses'=>'TelaahController@rekapUsulanJenis'));
 
 	//telaah
 	Route::get('telaah/tambahTelaah/{id}', array('as'=>'tambahTelaah', 'uses'=>'TelaahController@tambahTelaah'));
+	Route::post('telaah/tambahTelaah/tambah', array('as'=>'prosesTambahTelaah', 'uses'=>'TelaahController@prosesTambahTelaah'));
+	Route::get('telaah/tambahTelaah/{id}/detailTelaah', array('as'=>'analisisHarga', 'uses'=>'TelaahController@detailTelaah'));
+	Route::get('telaah/tambahTelaah/{id}/analisisHarga', array('as'=>'analisisHarga', 'uses'=>'TelaahController@analisisHarga'));
+	Route::get('telaah/tambahTelaah/{id}/analisisHarga/proses', array('as'=>'analisisHargaProses', 'uses'=>'TelaahController@prosesAnalisis'));
 	Route::get('telaah/loadUsulan/{tahun}', array('as'=>'loadUsulan', 'uses'=>'TelaahController@loadUsulan'));
-
+	Route::post('telaah/ubahHarga/{idBarang}/{idUsulan}', array('as'=>'prosesTambahTelaah', 'uses'=>'TelaahController@prosesUbah'));
+	Route::get('telaah/tambahTelaah/{id}/analisisKebutuhan', array('as'=>'analisisKebutuhan', 'uses'=>'TelaahController@analisisKebutuhan'));
+	Route::post('telaah/analisisKebutuhanProses', array('as'=>'prosesTambahTelaah', 'uses'=>'TelaahController@prosesUpdateKebutuhan'));
+	Route::get('telaah/selesai/{id}', array('as'=>'telaahSelesai', 'uses'=>'TelaahController@telaahSelesai'));
+	Route::get('telaah/kirim/{id}', array('as'=>'kirimTelaah', 'uses'=>'TelaahController@kirimTelaah'));
+	Route::post('telaah/editTelaah/{id}', array('as'=>'editTelaah', 'uses'=>'TelaahController@editTelaah'));
+	
+	//Telaah Data
+	Route::get('telaah/draftTelaah/{tahun}', array('as'=>'telaahDraft', 'uses'=>'TelaahController@draftTelaah'));
+	Route::get('telaah/daftarTelaah/{tahun}', array('as'=>'daftarTelaah', 'uses'=>'TelaahController@daftarTelaah'));
 });
 
 //route untuk Actor spp
@@ -201,9 +219,27 @@ Route::group(['middleware' => ['web','auth','level:4', 'status:1']], function(){
 	Route::post('ttdSp/edit/{id}', array('as'=>'TtdSppEdit', 'uses'=>'TtdSppController@edit'));
 	Route::post('ttdSp/hapus/{id}', array('as'=>'TtdSppEdit', 'uses'=>'TtdSppController@hapus'));
 
+	Route::get('spp/usulan/{tahun}', array('as'=>'SppUsulan', 'uses'=>'UsulanController@dataUsulanSpp'));
+	Route::get('spp/detail/{id}', array('as'=>'detail', 'uses'=>'UsulanController@detail'));
+
+	Route::get('spp/telaah/{tahun}', array('as'=>'daftarTelaah', 'uses'=>'TelaahController@daftarTelaah'));
+	Route::get('spp/telaah/{id}/detail', array('as'=>'detailTelaah', 'uses'=>'TelaahController@telaahSelesai'));
+	Route::get('loadUsulanTelaah/{id}', array('as'=>'loadUsulanTelaah', 'uses'=>'SpController@loadUsulanTelaah'));
+	
+	Route::get('spp/tambah/step1/{id}', array('as'=>'tambahSp1', 'uses'=>'SpController@step1'));
+	Route::post('spp/pilihTahun', array('as' => 'PilihTahun', 'uses'=>'spController@pilihTahun'));
+	Route::get('spp/tambah/step2/{tahun}/{id}', array('as'=>'tambahSp2', 'uses'=>'SpController@step2'));
+	Route::post('spp/simpanSp', array('as' => 'tambahSp2', 'uses'=>'spController@simpanSp'));
+	Route::get('spp/tambah/step3/{tahun}/{id}', array('as'=>'tambahSp3', 'uses'=>'SpController@step3'));
+
+	//report
+	Route::get('Laporan/{tahun}', array('as'=>'TtdSpp', 'uses'=>'RkaklSubAlokasiController@treeView'));
+	Route::get('coba/treeGrid', array('as'=>'treeGrid', 'uses'=>'RkaklSubAlokasiController@treeGrid'));
 });
 
 //route untuk Actor manajemen
 Route::group(['middleware' => ['web','auth','level:5', 'status:1']], function(){
 
 });
+
+

@@ -8,6 +8,7 @@ use DB;
 use Validator;
 use Storage;
 use Mail;
+use PDF;
 use App\Usulan as Usulan;
 use App\Mail\SentMail;
 use App\TtdUsulan as TtdUsulan;
@@ -94,7 +95,7 @@ class UsulanController extends Controller {
         $data->pengirim_usulan  = $request->pengirim;
         $data->save();
 
-        return Redirect('tambahItemBarang/'.$data->id_usulan);
+        return Redirect('tambahItemBarang/'.$data->id_usulan)->with(getNotif('Data berhasil di Tambahkan', 'success'));
     }
 
     public function prosesEdit(request $request, $id) {
@@ -124,7 +125,7 @@ class UsulanController extends Controller {
         $data->pengirim_usulan  = $request->pengirim;
         $data->update();
 
-        return Redirect('tambahItemBarang/'.$id);
+        return Redirect('tambahItemBarang/'.$id)->with(getNotif('Data berhasil di Update', 'success'));
     }
 
     public function uploadLampiran(request $request, $id) {
@@ -157,7 +158,7 @@ class UsulanController extends Controller {
         $data->link_file    = $name;
         $data->save();
 
-        return Redirect('tambahItemBarang/'.$id);
+        return Redirect('tambahItemBarang/'.$id)->with(getNotif('file berhasil di upload', 'success'));
     }
 
     public function hapusLampiran($id, $idFile){
@@ -170,7 +171,7 @@ class UsulanController extends Controller {
             app::abort(404);
         $data->delete();
 
-        return Redirect('tambahItemBarang/'.$id);
+        return Redirect('tambahItemBarang/'.$id)->with(getNotif('Data berhasil di hapus', 'error'));
     }
 
     public function tambahBarang(request $request, $id) {
@@ -203,7 +204,7 @@ class UsulanController extends Controller {
         $data->catatan_usulan   = $request->catatan;
         $data->save();
 
-        return Redirect('tambahItemBarang/'.$id);
+        return Redirect('tambahItemBarang/'.$id)->with(getNotif('Data berhasil di ditambahkan', 'success'));
     }
 
     public function editBarang(request $request,$id, $id_usulan) {
@@ -235,7 +236,7 @@ class UsulanController extends Controller {
         $data->catatan_usulan   = $request->catatan;
         $data->Update();
 
-        return Redirect('tambahItemBarang/'.$id_usulan);
+        return Redirect('tambahItemBarang/'.$id_usulan)->with(getNotif('Data berhasil di Update', 'success'));
     }
 
     public function hapusBarang($idBarang, $idUsulan){
@@ -246,7 +247,7 @@ class UsulanController extends Controller {
             app::abort(404);
         $data->delete();
 
-        return Redirect('tambahItemBarang/'.$idUsulan);
+        return Redirect('tambahItemBarang/'.$idUsulan)->with(getNotif('Data berhasil di hapus', 'error'));
     }
 
     public function addItem($id){
@@ -280,7 +281,7 @@ class UsulanController extends Controller {
         $th = Tahun::all();
        /*  $usulan = Usulan::where('usulan.tahun', '=', $tahun)->get(); */
         $usulan = DB::table('usulan')
-            ->rightjoin('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
+            ->leftJoin('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
             ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum, usulan.no_usulan, usulan.tgl_usulan, usulan.perihal_usulan, usulan.id_usulan'))
             ->where('usulan.tahun', '=', $tahun)
             ->where('usulan.id_unit_kerja', '=', $id_unit)
@@ -293,8 +294,13 @@ class UsulanController extends Controller {
 
     protected function detail($id){
         $id_unit = Auth::user()->id_unit_kerja;
-
-        $usulan = Usulan::where('id_usulan', '=', $id)->where('id_unit_kerja', '=', $id_unit)->first();
+        $level      = Auth::user()->level;
+        if($level == 4) {
+            $usulan = Usulan::where('id_usulan', '=', $id)->first();
+        } else {
+            $usulan = Usulan::where('id_usulan', '=', $id)->where('id_unit_kerja', '=', $id_unit)->first();
+        }
+        
 
         $lampiran = DB::table('usulan_lampiran')->where('id_usulan', '=', $id)->get();
 
@@ -335,7 +341,7 @@ class UsulanController extends Controller {
         $update->tgl_kirim = $tgl;
         $update->update();
 
-        return back()->with('Success', "terima kasih"); 
+        return back()->with(getNotif('Data berhasil di dikirimkan', 'success')); 
 		
     }
     
@@ -360,22 +366,6 @@ class UsulanController extends Controller {
         $id_unit = Auth::user()->id_unit_kerja;
         $th      = Tahun::all();
         
-        /** 
-        $jenis = DB::table('usulan')
-            ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
-            ->where('usulan.tahun', '=', $tahun)
-            ->where('usulan.id_unit_kerja', '=', $id_unit)
-            ->where('usulan.tgl_kirim', '!=', NULL)
-            ->select(DB::raw('usulan.jenis_usulan, sum(usulan_barang.jumlah_usulan) as jum_jenis'))
-            ->groupBy('usulan.jenis_usulan')
-            ->get();
-        
-        $data_jenis = array(
-            'kode' => $jenis->jenis_usulan,
-            'jum'  => $jenis->jum_jenis
-        );
-        **/
-
         $usulan = DB::table('usulan')
             ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
             ->where('usulan.tahun', '=', $tahun)
@@ -388,11 +378,75 @@ class UsulanController extends Controller {
         return view('admin.dashboard.usulan.rekapUsulan',compact('tahun', 'th', 'data_jenis', 'usulan','detail'));
     }
 
-    protected function detailRekap($tahun, $id) {
+    protected function pdfRekap($tahun){
+        $id_unit = Auth::user()->id_unit_kerja;
+        $satker  = UnitKerja::find($id_unit);
+        $th      = Tahun::all();
+        
+        $usulan = DB::table('usulan')
+            ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
+            ->where('usulan.tahun', '=', $tahun)
+            ->where('usulan.id_unit_kerja', '=', $id_unit)
+            ->where('usulan.tgl_kirim', '!=', NULL)
+            ->select(DB::raw('usulan.jenis_usulan, sum(usulan_barang.jumlah_usulan) as jum_usulan, usulan.jenis_usulan'))
+            ->groupBy( 'usulan.jenis_usulan')
+            ->get();
 
+        $pdf = PDF::loadview('admin.dashboard.usulan.pdfRekapUsulan', compact('tahun', 'th', 'usulan', 'satker'));
+        return $pdf->stream();
+    }
+
+    protected function rekapDetail($tahun, $jenis) {
+        $id_unit = Auth::user()->id_unit_kerja;
+        $th      = Tahun::all();
+
+        $usulan = DB::table('usulan')
+            ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
+            ->where('usulan.tahun', '=', $tahun)
+            ->where('usulan.id_unit_kerja', '=', $id_unit)
+            ->where('usulan.tgl_kirim', '!=', NULL)
+            ->where('usulan.jenis_usulan', '=', $jenis)
+            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum, usulan.no_usulan, usulan.tgl_usulan, usulan.perihal_usulan, usulan.id_usulan'))
+            ->groupBy('usulan_barang.id_usulan', 'usulan.no_usulan', 'usulan.tgl_usulan', 'usulan.perihal_usulan', 'usulan.id_usulan')
+            ->get();
+
+        return view('admin.dashboard.usulan.rekapDetailUsulan',compact('tahun', 'th', 'usulan', 'jenis'));
+    }
+
+    protected function pdfRekapDetail($tahun, $jenis) {
+        $id_unit = Auth::user()->id_unit_kerja;
+        $satker  = UnitKerja::find($id_unit);
+        $th      = Tahun::all();
+
+        $usulan = DB::table('usulan')
+            ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
+            ->where('usulan.tahun', '=', $tahun)
+            ->where('usulan.id_unit_kerja', '=', $id_unit)
+            ->where('usulan.tgl_kirim', '!=', NULL)
+            ->where('usulan.jenis_usulan', '=', $jenis)
+            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum, usulan.no_usulan, usulan.tgl_usulan, usulan.perihal_usulan, usulan.id_usulan'))
+            ->groupBy('usulan_barang.id_usulan', 'usulan.no_usulan', 'usulan.tgl_usulan', 'usulan.perihal_usulan', 'usulan.id_usulan')
+            ->get();
+        
+        $pdf = PDF::loadview('admin.dashboard.usulan.pdfRekapDetailUsulan', compact('tahun', 'th', 'usulan', 'satker'));
+        return $pdf->stream();
     }
 
     protected function eksportUsulan($tahun){
         return view('admin.dashboard.usulan.eksportUsulan',compact('tahun'));
+    }
+
+    protected function dataUsulanSpp($tahun){
+        $th = Tahun::all();
+
+        $usulan = DB::table('usulan')
+            ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
+            ->where('usulan.tahun', '=', $tahun)
+            ->where('usulan.tgl_kirim', '!=', NULL)
+            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum, usulan.no_usulan, usulan.tgl_usulan, usulan.perihal_usulan, usulan.id_usulan'))
+            ->groupBy('usulan_barang.id_usulan', 'usulan.no_usulan', 'usulan.tgl_usulan', 'usulan.perihal_usulan', 'usulan.id_usulan')
+            ->get();
+
+        return view('admin.dashboard.sp.dataUsulan',compact('tahun', 'th', 'usulan','detail'));
     }
 }

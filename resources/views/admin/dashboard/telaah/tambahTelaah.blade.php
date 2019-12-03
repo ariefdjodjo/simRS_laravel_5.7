@@ -28,7 +28,7 @@
       </div><!-- /.box-header -->
       
       <div class="box-body">
-        <form action="{{url('telaah/prosesTambah')}}" method="POST" class="form-horizontal" name="formTelaah" id="formTelaah">
+        <form action="{{url('telaah/tambahTelaah/tambah')}}" method="POST" class="form-horizontal" name="formTelaah" id="formTelaah">
           @csrf
 
           <!-- Select Basic -->
@@ -44,7 +44,7 @@
               <label class="col-md-2 control-label" for="noUsulan">Nomor Usulan</label>
               <div class="col-md-5">
                 <input class="form-control" value="{{$usulan->no_usulan}}" disabled>
-                <input id="noUsulan" name="noUsulan" type="hidden" class="form-control  input-md" value="{{$usulan->no_usulan}}">
+                <input id="noUsulan" name="noUsulan" type="hidden" class="form-control  input-md" value="{{$usulan->id_usulan}}">
               </div>
           </div>
 
@@ -76,7 +76,7 @@
           <div class="form-group">
             <label class="col-md-2 control-label" for="tglTelaah">Tanggal Telaah</label>  
             <div class="col-md-2">
-            <input id="tglTelaah" name="tglTelaah" value="{{getNow()}}" type="text" placeholder="Tanggal Telaah" class="form-control input-md datepicker" required="">
+            <input id="tglTelaah" name="tglTelaah" value="{{getNow()}}" type="text" placeholder="Tanggal Telaah" class="form-control input-md datepicker">
             <span class="help-block"></span>  
             </div>
           </div>
@@ -125,9 +125,9 @@
             <label class="col-md-2 control-label" for="urgensi">Urgensi</label>
             <div class="col-md-4">
               <select id="urgensi" name="urgensi" class="form-control" required> 
-                <option value="Biasa">Biasa</option>  
-                <option value="Segera">Segera</option>
-                <option value="Rahasia">Rahasia</option>
+                <option value="1">Biasa</option>  
+                <option value="2">Segera</option>
+                <option value="3">Rahasia</option>
               </select>
 
               <script>

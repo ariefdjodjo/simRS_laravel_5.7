@@ -15,4 +15,8 @@ class RkaklKegiatan extends Model
     public function RkaklTahun() {
     	return $this->belongTo('App\RkaklTahun');
     }
+
+    public function kegiatan(){
+        return $this->hasMany('App\RkaklSubAlokasi');
+    }
 }

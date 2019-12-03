@@ -12,4 +12,8 @@ class TtdSpp extends Model
 
     protected $fillable = ['nama_penandatangan', 'nip_penandatangan', 'jabatan', 'file_ttd', 'status'];
 
+    public function sp(){
+        return $this->hasMany('App\\Sp', 'id_ttd_sp', 'penandatangan_sp');
+    }
+
 }

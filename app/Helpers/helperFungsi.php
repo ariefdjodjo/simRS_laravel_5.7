@@ -1,4 +1,20 @@
 <?php
+
+	function getUrgensi($id){
+		switch ($id) {
+			case '1':
+			return "Biasa";
+			break;
+
+			case '2':
+			return "Segera";
+			break;
+
+			case '3':
+			return "Rahasia";
+			break;
+		}
+	}
 	//fungsi notifikasi
 	function getNotif($status, $type) {
 		$notif = array(

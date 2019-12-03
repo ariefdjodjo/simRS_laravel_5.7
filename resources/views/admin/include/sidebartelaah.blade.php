@@ -24,7 +24,6 @@
               </a>
               <ul class="treeview-menu collapse">
                 <li><a href="{{{URL::to('telaah/usulanMasuk/0/0')}}}"><i class="fa fa-folder"></i> Usulan Unit Kerja</a></li>
-                <li><a href="{{{URL::to('unitKerja/data')}}}"><i class="fa fa-folder-open-o"></i> Rekap Usulan</a></li>
               </ul>
             </li>
 
@@ -35,10 +34,9 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu collapse">
-                <li><a href="{{{URL::to('telaah/tambahTelaah')}}}"><i class="fa fa-plus"></i> Tambah Telaah</a></li>
-                <li><a href="{{{URL::to('unitKerja/data')}}}"><i class="fa fa-bar-chart"></i> Draft Telaah</a></li>
-                <li><a href="{{{URL::to('unitKerja/data')}}}"><i class="fa fa-list"></i> Daftar Telaah</a></li>
-                <li><a href="{{{URL::to('unitKerja/data')}}}"><i class="fa fa-file-o"></i> Laporan</a></li>
+                <li><a href="{{{URL::to('telaah/draftTelaah/0')}}}"><i class="fa fa-bar-chart"></i> Draft Telaah</a></li>
+                <li><a href="{{{URL::to('telaah/daftarTelaah/0')}}}"><i class="fa fa-list"></i> Daftar Telaah</a></li>
+                <li><a href="{{{URL::to('telaah/rekapUsulan/0')}}}"><i class="fa fa-folder-open-o"></i> Laporan</a></li>
               </ul>
             </li>
 

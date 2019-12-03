@@ -14,7 +14,9 @@ class CreateRkaklSubOutputsTable extends Migration
     public function up()
     {
         Schema::create('rkakl_sub_outputs', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id_sub_output');
+            $table->string('kode_sub_output', 10);
+            $table->string('uraian_sub_output', 250);
             $table->timestamps();
         });
     }

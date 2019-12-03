@@ -23,8 +23,7 @@
                       <tr>
                         <th width="5%">No</th>
                         <th width="20%">Nama User</th>
-                        <th width="20%">Username</th>
-                        <th width="25%">Email</th>
+                        <th width="25%">Unit Kerja</th>
                         <th width="5%">Status</th>
                         <th width="10%">Level</th>
                         <th width="20%">Action</th>
@@ -40,15 +39,14 @@
                       <tr>
                         <td>{{ $urut++ }}</td>
                         <td>{{ $user->name }}</td>
-                        <td>{{ $user->username }}</td>
-                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->unitKerja->nama_unit_kerja}}</td>
                         <td align="center">
                           
                             @if($user->status == 0)
-                              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#status{{$user->id}}">
+                              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#status{{$user->id}}">
                               <i class="fa fa-remove"></i>
                             @else 
-                              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#status{{$user->id}}">
+                              <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#status{{$user->id}}">
                               <i class="fa fa-check"></i>
                             @endif
 
@@ -169,7 +167,7 @@
                                               <td><label for="satker" class="control-label text-md-right">{{ __('Unit Kerja') }}</label></td>
                                               <td>
                                                 <select id="id_unit_kerja{{$user->id}}" class="form-control" name="id_unit_kerja" style="width:100%">
-                                                    <option value="{{$user->id_unit_kerja}}">{{$user->nama_unit_kerja}}</option>
+                                                    <option value="{{$user->id_unit_kerja}}">{{$user->unitKerja->nama_unit_kerja}}</option>
                                                     <option value="">-- Pilih Unit Kerja --</option>
                                                     @foreach($listMstUnitKerja as $list) 
                                                         <option value="{{ $list->id_unit_kerja}}">{{ $list->nama_unit_kerja }}</option>

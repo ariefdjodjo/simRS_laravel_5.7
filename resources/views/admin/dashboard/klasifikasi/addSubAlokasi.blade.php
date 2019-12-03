@@ -20,7 +20,7 @@
             <a href="{{url('klasifikasi/'.$th.'/'.$datakegiatan->id_kegiatan.'/'.$dataoutput->id_output.'')}}" class="btn btn-warning" role="button">{{getKode($datasubOutput->kode_sub_output)}}</a>
             <a href="{{url('klasifikasi/'.$th.'/'.$datakegiatan->id_kegiatan.'/'.$dataoutput->id_output.'/'.$datasubOutput->id_sub_output.'')}}" class="btn btn-warning" role="button">{{getKode($datakomponen->kode_komponen)}}</a>
             <a href="{{url('klasifikasi/'.$th.'/'.$datakegiatan->id_kegiatan.'/'.$dataoutput->id_output.'/'.$datasubOutput->id_sub_output.'/'.$datakomponen->id_komponen)}}" class="btn btn-warning" role="button">{{getKode($datasubKomponen->kode_sub_komponen)}}</a>
-            <a href="{{url('klasifikasi/'.$datath->tahun.'/'.$datakegiatan->id_kegiatan.'/'.$dataoutput->id_output.'/'.$datasubOutput->id_sub_output.'/'.$datakomponen->id_komponen.'/'.$datasubKomponen->id_sub_komponen)}}" class="btn btn-primary" role="button">Sub Alokasi</a>
+            <a href="{{url('klasifikasi/'.$datath->tahun.'/'.$datakegiatan->id_kegiatan.'/'.$dataoutput->id_output.'/'.$datasubOutput->id_sub_output.'/'.$datakomponen->id_komponen.'/'.$datasubKomponen->id_sub_komponen)}}" class="btn btn-primary" role="button">{{$datasubKomponen->uraian_sub_komponen}}</a>
       </div>
     </div>
   </div>

@@ -46,9 +46,11 @@ class RegisterController extends Controller
     }
 
     protected function index() {
-        $data = DB::table('users')
-            ->leftjoin('mst_unit_kerja', 'mst_unit_kerja.id_unit_kerja', '=', 'users.id_unit_kerja')
-            ->get();
+        // $data = DB::table('users')
+        //     ->leftjoin('mst_unit_kerja', 'mst_unit_kerja.id_unit_kerja', '=', 'users.id_unit_kerja')
+        //     ->get();
+
+        $data = User::with('unitKerja')->get();
         $listMstUnitKerja = MstUnitKerja::all();
         return view('admin.dashboard.user.data',compact('data', 'listMstUnitKerja')); 
 

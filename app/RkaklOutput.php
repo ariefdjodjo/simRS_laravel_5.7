@@ -12,4 +12,8 @@ class RkaklOutput extends Model
 	protected $primaryKey = 'id_output';
 
     protected $fillable = ['id_output', 'kode_output', 'uraian_output'];
+
+    public function output(){
+        return $this->hasMany('App\RkaklSubAlokasi');
+    }
 }

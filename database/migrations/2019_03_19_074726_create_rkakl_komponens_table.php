@@ -14,8 +14,10 @@ class CreateRkaklKomponensTable extends Migration
     public function up()
     {
         Schema::create('rkakl_komponens', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->increments('id_komponen');
+            $table->string('kode_komponen', 10);
+            $table->string('uraian_komponen', 250);
+            //$table->timestamps();
         });
     }
 

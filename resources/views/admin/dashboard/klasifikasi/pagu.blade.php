@@ -37,7 +37,9 @@
     @if($tahun == 0) 
         Pilih Tahun 
     @else
-    
+        <div style="text-align:right; padding:5px">
+            <a href="{{url('Laporan/'.$tahun)}}" class="btn btn-primary btn-sm">Struktur RKA-K/L</a>
+        </div>            
         <table id="dataAkun" class="table table-bordered">
         <thead>
             <tr>

@@ -32,17 +32,27 @@
         $total = 0;
     ?>
     <div class="box box-primary">
-        <div class="box-header">
-            <b><h2 style="text-align:center">Data Usulan</h2></b>
-        </div>
+        
         <div class="box-body">
             @if($tahun==0)
             <h3>PILIH TAHUN</h3>
             @else
-            <div>
-                <a href="" class="btn btn-info"><i class="fa fa-print"></i> Cetak PDF</a>
-                <a href="" class="btn btn-warning"><i class="fa fa-file-excel-o"></i> Eksport Excel</a>
-            </div>
+            <table width="100%">
+                <tr>
+                    <td width="70%">
+                        <div class="box-header">
+                            <b><h2 style="padding:0;">Data Usulan</h2></b>
+                        </div>
+                    </td>
+                    <td width="30%" style="text-align:right">
+                        <div class="btn-group">
+                            <a href="{{URL::to('/rekapUsulan/pdf/'.$tahun)}}" target="blank" class="btn btn-info btn-sm"><i class="fa fa-print"></i> Cetak PDF</a>
+                            <a href="{{URL::to('/rekapUsulan/excel/'.$tahun)}}" class="btn btn-warning btn-sm"><i class="fa fa-file-excel-o"></i> Eksport Excel</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            
             <hr>
 
             <table class="table table-bordered" id="rekapUsulan" width="100%">
@@ -60,7 +70,7 @@
                             <td>{{$urut++}}</td>
                             <td>{{getJenis($data->jenis_usulan)}}</td>
                             <td style="text-align:right">{{getNumber($data->jum_usulan)}}</td>
-                            <td style="text-align:center"><a href="" class="btn btn-primary">Detail</a></td>
+                            <td style="text-align:center"><a href="{{URL::to('/rekapDetailUsulan/'.$tahun.'/'.$data->jenis_usulan)}}" class="btn btn-primary">Detail</a></td>
                         </tr>
 
                         <?php $total+=$data->jum_usulan; ?>

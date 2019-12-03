@@ -13,9 +13,12 @@ class CreateUsulanLampiransTable extends Migration
      */
     public function up()
     {
-        Schema::create('usulan_lampirans', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+        Schema::create('usulan_lampiran', function (Blueprint $table) {
+            $table->increments('id_lampiran_usulan');
+            $table->integer('id_usulan');
+            $table->string('nama_dokumen', 250);
+            $table->text('link_file');
+            //$table->timestamps();
         });
     }
 
@@ -26,6 +29,6 @@ class CreateUsulanLampiransTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('usulan_lampirans');
+        Schema::dropIfExists('usulan_lampiran');
     }
 }

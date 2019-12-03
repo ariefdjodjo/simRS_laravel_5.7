@@ -14,7 +14,6 @@
     <!-- Font Awesome -->
     <link href="{{URL::asset('admin/bootstrap/css/font-awesome.min.css')}}"  rel="stylesheet"  type="text/css" >
     <!-- Ionicons -->
-    <!-- <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"> -->
     <!-- <link href="{{URL::asset('admin/plugins/ionicons/css/ionicons.min.css')}}"  rel="stylesheet"  type="text/css" > -->
     
     <!-- jvectormap -->
@@ -23,13 +22,14 @@
     <!-- Theme style -->
    
     <link href="{{URL::asset('admin/dist/css/AdminLTE.min.css')}}" rel="stylesheet"  type="text/css" >
+    <link href="{{URL::asset('admin/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     
     <link href="{{URL::asset('admin/dist/css/skins/_all-skins.min.css')}}"  rel="stylesheet" >
     <link href="{{URL::asset('admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{URL::asset('img/sjt.ico') }}" rel="SHORTCUT ICON" />
-    <link href="{{URL::asset('admin/plugins/datatables/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{url('css/progress.css')}}">
 
     <!-- selectize -->
     <script type="text/javascript" src="{{ URL::asset('selectize/jquery-1.10.2.min.js')}}"></script>
@@ -40,10 +40,45 @@
     <!-- notifikasi -->
     <link href="{{URL::asset('admin/plugins/toastr/build/toastr.min.css')}}"  rel="stylesheet"  type="text/css" >
 
+    {{-- Tree view --}}
+    <link href="{{url('treeView/dist/css/jquery.treegrid.css')}}" rel="stylesheet">
+
+    {{-- <link href="{{url('css/progress.css')}}" rel="stylesheet" type="text/css"> --}}
+
+    {{-- loading --}}
+    <style type="text/css">
+      .preloader {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        /* background: #FFF; */
+        /* opacity: .6; */
+      }
+
+      .loading {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        font: 20px arial bold;
+        text-align: center;
+      }
+      </style>
+
     <!-- bikin script base_url untuk dipanggil dari javascript -->
     <meta name="base_url" content="{{ URL::to('/') }}">
   </head>
   <body class="hold-transition skin-green-light sidebar-mini">
+
+      <div class="preloader">
+          <div class="loading">
+            <img src="{{url('img/loading.gif')}}" width="100%">
+          </div>
+        </div>
+
     <div class="wrapper">
 
       @include('admin.include.header')
@@ -85,6 +120,8 @@
    <script src="{{ URL::asset('admin/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>    
     <script src="{{ URL::asset('admin/plugins/jQueryUI/jquery-ui.min.js') }}"></script>
     <script src="{{ URL::asset('admin/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ URL::asset('admin/bootstrap/js/popover.js') }}"></script>
+    
     
     <script src='{{ URL::asset('admin/plugins/select2/select2.full.min.js') }}'></script>
     @yield('script')
@@ -114,6 +151,8 @@
 <script src="{{ URL::asset('admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('admin/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('admin/plugins/toastr/build/toastr.min.js') }}"></script>
+
+<script src="{{url('treeView/dist/js/jquery.treegrid.min.js')}}"></script>
 
   <script>
     toastr.options = {
@@ -157,5 +196,12 @@
       
     @endif      
   </script>
+
+  <script type="text/javascript">
+    $(window).load(function() {
+      $(".preloader").fadeOut("slow");
+    });
+  </script>
+
   </body>
 </html>

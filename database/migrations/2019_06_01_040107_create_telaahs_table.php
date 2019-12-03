@@ -13,8 +13,17 @@ class CreateTelaahsTable extends Migration
      */
     public function up()
     {
-        Schema::create('telaahs', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('telaah', function (Blueprint $table) {
+            $table->increments('id_telaah');
+            $table->integer('id_usulan', 10);
+            $table->string('no_telaah', 30);
+            $table->date('tgl_telaah');
+            $table->integer('penandatangan', 5);
+            $table->text('analisis_kebutuhan');
+            $table->text('alasan_kebutuhan');
+            $table->string('urgency', 4);
+            $table->date('tgl_kirim')->nullable();
+            $table->data('tgl_baca')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +35,6 @@ class CreateTelaahsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('telaahs');
+        Schema::dropIfExists('telaah');
     }
 }

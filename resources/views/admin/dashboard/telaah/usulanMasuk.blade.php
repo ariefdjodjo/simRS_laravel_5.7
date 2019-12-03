@@ -13,39 +13,28 @@
 @section('content')
     <div class="box box-primary">
         <div class="box-header">
-            <div class="btn-group">
-                @foreach($th as $data)
-                <ul class="dropdown-menu">
+            <div class="btn-group" role="group">
+                @foreach($th as $data)                
+                <div class="btn-group">
                     <button type="button" 
-                        @if($tahun == $data->tahun)
-                                class="btn btn-primary dropdown-toggle" 
-                        @else 
-                                class="btn btn-default dropdown-toggle" 
-                        @endif
+                        <?php 
+                        if($tahun == $data->tahun) {
+                            echo "class='btn btn-primary dropdown-toggle'"; 
+                        } else {
+                            echo "class='btn btn-default dropdown-toggle'";
+                        } 
+                        ?>
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{$data->tahun}} <span class="caret"></span>
+                        {{$data->tahun}} <span class="caret"></span>
                     </button>
-                    <li><a href="{{{URL::to('telaah/usulanMasuk/'.$data->tahun)}}}" role="button">{{$data->tahun}}</a></li>
-                </ul>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{url('telaah/usulanMasuk/belum/'.$data->tahun)}}">Usulan Baru</a></li>
+                        <li><a href="{{url('telaah/usulanMasuk/belumProses/'.$data->tahun)}}">Usulan Belum Proses</a></li>
+                        <li><a href="{{url('telaah/usulanMasuk/Proses/'.$data->tahun)}}">Usulan Sudah di Proses</a></li>
+                    </ul>
+                </div>
+                
                 @endforeach
-            <div class="btn-group">
-                <button type="button" 
-                    <?php 
-                    if($tahun == $data->tahun) {
-                        echo "class='btn btn-primary dropdown-toggle'"; 
-                    } else {
-                        echo "class='btn btn-default dropdown-toggle'";
-                    } 
-                    ?>
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{$data->tahun}} <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="{{url('telaah/usulanMasuk/belum/'.$data->tahun)}}">Usulan Baru</a></li>
-                    <li><a href="{{url('telaah/usulanMasuk/belumProses/'.$data->tahun)}}">Usulan Belum Proses</a></li>
-                    <li><a href="{{url('telaah/usulanMasuk/Proses/'.$data->tahun)}}">Usulan Sudah di Proses</a></li>
-                </ul>
-            </div>
             </div>
         </div>
     </div>
@@ -83,11 +72,18 @@
                             <td>{{$data->perihal_usulan}}</td>
                             <td style="text-align:right">{{getNumber($data->jum)}}</td>
                             <td style="text-align:center">
-                                @if($data->dibaca == NULL)
+                                @if($status == 0)
                                     <a href="{{url('telaah/baca/'.$data->id_usulan.'')}}" class="btn btn-primary btn-sm"><i class="fa fa-loop"></i> Baca</a>
-                                @else 
+                                @elseif($status == 1)
                                     <a href="{{url('telaah/detailUsulan/'.$data->id_usulan.'')}}" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> Detail</a>
                                     <a href="{{url('telaah/tambahTelaah/'.$data->id_usulan.'')}}" class="btn btn-warning btn-sm"><i class="fa fa-plus"></i> Buat Telaah</a>
+                                @else 
+                                    <a href="{{url('telaah/detailUsulan/'.$data->id_usulan.'')}}" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> Detail</a>
+                                    @if($data->tgl_kirim == NULL)
+                                    <a href="{{url('telaah/tambahTelaah/'.$data->id_usulan.'/detailTelaah')}}" class="btn btn-success btn-sm"><i class="fa fa-book"></i> Detail Telaah</a>
+                                    @else 
+                                    <a href="{{url('telaah/selesai/'.$data->id_usulan)}}" class="btn btn-warning btn-sm"><i class="fa fa-print"></i> Cetak Telaah</a>
+                                    @endif
                                 @endif
 
                             </td>

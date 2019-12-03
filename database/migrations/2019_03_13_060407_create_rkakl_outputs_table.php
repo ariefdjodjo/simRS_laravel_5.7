@@ -14,8 +14,10 @@ class CreateRkaklOutputsTable extends Migration
     public function up()
     {
         Schema::create('rkakl_outputs', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->increments('id_output');
+            $table->string('kode_output', 50);
+            $table->string('uraian_output', 250);
+            //$table->timestamps();
         });
     }
 

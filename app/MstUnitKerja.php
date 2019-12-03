@@ -15,4 +15,12 @@ class MstUnitKerja extends Model
     public function ttdUsulan(){
     	return $this->belongTo('App\TtdUsulan');
     }
+
+    public function usulan(){
+        return $this->hasMany('App\Usulan');
+    }
+
+    public function user(){
+        return $this->hasMany('App\\User', 'id_unit_kerja', 'id_unit_kerja');
+    }
 }

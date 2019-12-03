@@ -19,7 +19,6 @@ class CreateMstUnitKerjasTable extends Migration
             $table->string('no_telp');
             $table->string('email_unit_kerja');
             $table->string('kode_agenda_satker');
-            //$table->timestamps();
         });
     }
 

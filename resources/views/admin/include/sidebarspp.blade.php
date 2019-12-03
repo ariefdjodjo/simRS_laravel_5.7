@@ -20,13 +20,25 @@
             <li class="treeview active">
               <a href="#">
                 <i class="fa fa-bell"></i>
+                <span>Surat Masuk</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu collapse">
+                <li><a href="{{{URL::to('spp/usulan/0')}}}"><i class="fa fa-envelope"></i> Surat Usulan</a></li>   
+                <li><a href="{{{URL::to('spp/telaah/0')}}}"><i class="fa fa-envelope-o"></i> Surat Telaah</a></li>    
+              </ul>
+            </li>
+
+            <li class="treeview active">
+              <a href="#">
+                <i class="fa fa-bell"></i>
                 <span>SPP Anggaran</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu collapse">
-                <li><a href="{{{URL::to('user/register')}}}"><i class="fa fa-plus"></i> Tambah SPP</a></li>   
-                <li><a href="{{{URL::to('user/data')}}}"><i class="fa fa-tags"></i> Data SPP</a></li>
-                <li><a href="{{{URL::to('user/register')}}}"><i class="fa fa-file"></i> Laporan SPP</a></li>    
+                <li><a href="{{{URL::to('spp/tambah/step1/0')}}}"><i class="fa fa-plus"></i> Tambah SPP</a></li>   
+                <li><a href="{{{URL::to('spp/data')}}}"><i class="fa fa-tags"></i> Data SPP</a></li>
+                <li><a href="{{{URL::to('spp/Laporan')}}}"><i class="fa fa-file"></i> Laporan SPP</a></li>    
               </ul>
             </li>
 

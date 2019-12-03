@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\MstUnitKerja as MstUnitKerja;
 
 class User extends Authenticatable
 {
@@ -61,6 +62,6 @@ class User extends Authenticatable
     }
 
     public function unitKerja() {
-        return $this->hasMany('App\MstUnitKerja');
+        return $this->belongsTo('App\\MstUnitKerja', 'id_unit_kerja', 'id_unit_kerja');
     }
 }

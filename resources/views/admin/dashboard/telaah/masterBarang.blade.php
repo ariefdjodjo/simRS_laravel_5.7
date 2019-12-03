@@ -227,7 +227,9 @@
     <script>
       $(function () {
 
-        $('#dataTtd').DataTable({"pageLength": 50});
+        $('#dataTtd').DataTable({
+          "pageLength": 50
+          });
 
       });
 

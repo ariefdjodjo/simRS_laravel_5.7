@@ -24,4 +24,16 @@ class RkaklSubAlokasi extends Model
         'pagu_alokasi',
         'id_ppk'
     ];
+
+    public function kegiatan(){
+        return $this->belongsTo('App\\RkaklKegiatan');
+    }
+
+    public function output() {
+        return $this->belongsTo('App\\RkaklOutput');
+    }
+
+    public function akun(){
+        return $this->belongsTo('App\\RkaklAkun', 'id_akun', 'id_akun');
+    }
 }

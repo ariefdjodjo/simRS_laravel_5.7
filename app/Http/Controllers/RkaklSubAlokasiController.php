@@ -198,4 +198,65 @@ class RkaklSubAlokasiController extends Controller
 
         return view('admin.dashboard.klasifikasi.pagu',compact('data', 'tahun', 'data_tahun'));
     }
+
+    public function treeView($tahun){
+        $data_tahun = RkaklTahun::all();
+        //kegiatan
+        $kegiatan = RkaklSubAlokasi::where('rkakl_sub_alokasi.tahun', '=', $tahun)
+            ->join('rkakl_kegiatan', 'rkakl_kegiatan.id_kegiatan', '=', 'rkakl_sub_alokasi.id_kegiatan')
+            ->groupBy('rkakl_sub_alokasi.id_kegiatan', 'rkakl_kegiatan.kode_kegiatan','rkakl_kegiatan.uraian_kegiatan')
+            ->select('rkakl_sub_alokasi.id_kegiatan', 'rkakl_kegiatan.kode_kegiatan', 'rkakl_kegiatan.uraian_kegiatan', \DB::raw('sum(rkakl_sub_alokasi.pagu_alokasi) as pg_kegiatan'))
+            ->get();
+
+        foreach($kegiatan as $keg) {
+            $output[$keg->id_kegiatan] = RkaklSubAlokasi::where('rkakl_sub_alokasi.id_kegiatan', '=', $keg->id_kegiatan)
+            ->join('rkakl_output', 'rkakl_sub_alokasi.id_output', '=', 'rkakl_output.id_output')
+            ->groupBy('rkakl_sub_alokasi.id_output', 'rkakl_output.uraian_output', 'rkakl_output.kode_output')
+            ->select('rkakl_sub_alokasi.id_output',  'rkakl_output.uraian_output', 'rkakl_output.kode_output', \DB::raw('sum(rkakl_sub_alokasi.pagu_alokasi) as total'))
+            ->get();
+
+            foreach($output[$keg->id_kegiatan] as $out) {
+                $subOutput[$out->id_output] = RkaklSubAlokasi::where('rkakl_sub_alokasi.id_output', '=', $out->id_output)
+                ->join('rkakl_sub_output', 'rkakl_sub_alokasi.id_sub_output', '=', 'rkakl_sub_output.id_sub_output')
+                ->groupBy('rkakl_sub_alokasi.id_sub_output','rkakl_sub_output.uraian_sub_output', 'rkakl_sub_output.kode_sub_output')
+                ->select('rkakl_sub_alokasi.id_sub_output', 'rkakl_sub_output.uraian_sub_output', 'rkakl_sub_output.kode_sub_output', \DB::raw('sum(rkakl_sub_alokasi.pagu_alokasi) as total'))
+                ->get();
+
+                foreach($subOutput[$out->id_output] as $so) {
+                    $komponen[$so->id_sub_output] = RkaklSubAlokasi::where('rkakl_sub_alokasi.id_sub_output', '=', $so->id_sub_output)
+                    ->rightJoin('rkakl_komponen', 'rkakl_sub_alokasi.id_komponen', '=', 'rkakl_komponen.id_komponen')
+                    ->groupBy('rkakl_sub_alokasi.id_komponen','rkakl_komponen.uraian_komponen', 'rkakl_komponen.kode_komponen')
+                    ->select('rkakl_sub_alokasi.id_komponen', 'rkakl_komponen.uraian_komponen', 'rkakl_komponen.kode_komponen', \DB::raw('sum(rkakl_sub_alokasi.pagu_alokasi) as total'))
+                    ->get();
+                    
+                    foreach($komponen[$so->id_sub_output] as $kom){
+                        $subKomponen[$kom->id_komponen] = RkaklSubAlokasi::where('rkakl_sub_alokasi.id_komponen', '=', $kom->id_komponen)
+                        ->rightJoin('rkakl_sub_komponen', 'rkakl_sub_alokasi.id_sub_komponen', '=', 'rkakl_sub_komponen.id_sub_komponen')
+                        ->groupBy('rkakl_sub_alokasi.id_sub_komponen','rkakl_sub_komponen.uraian_sub_komponen', 'rkakl_sub_komponen.kode_sub_komponen')
+                        ->select('rkakl_sub_alokasi.id_sub_komponen', 'rkakl_sub_komponen.uraian_sub_komponen', 'rkakl_sub_komponen.kode_sub_komponen', \DB::raw('sum(rkakl_sub_alokasi.pagu_alokasi) as total'))
+                        ->get();
+
+                        foreach($subKomponen[$kom->id_komponen] as $sKom){
+                            $sAlokasi[$sKom->id_sub_komponen] = RkaklSubAlokasi::where('rkakl_sub_alokasi.id_sub_komponen', '=', $sKom->id_sub_komponen)
+                            ->join('rkakl_akun', 'rkakl_akun.id_akun', '=', 'rkakl_sub_alokasi.id_akun')
+                            ->groupBy('rkakl_sub_alokasi.id_sub_alokasi','rkakl_sub_alokasi.uraian_sub_alokasi', 'rkakl_akun.kode_akun', 'rkakl_akun.sumber_dana')
+                            ->select('rkakl_sub_alokasi.id_sub_alokasi', 'rkakl_sub_alokasi.uraian_sub_alokasi', 'rkakl_akun.kode_akun', 'rkakl_akun.sumber_dana', \DB::raw('sum(rkakl_sub_alokasi.pagu_alokasi) as total'))
+                            ->get();
+                        }
+                    }
+                }
+            }
+
+        }
+
+            
+
+        //$komponen = RkaklSubAlokasi::groupBy('id_komponen')->select('*')->get();
+        // return response()->json([$kegiatan, $output, $subOutput, $komponen, $subKomponen, $sAlokasi]);
+        return view('admin.dashboard.klasifikasi.strukturPagu',compact('kegiatan', 'output', 'subOutput', 'komponen', 'subKomponen', 'sAlokasi', 'tahun', 'data_tahun'));
+    }
+
+    public function treeGrid(){
+        return view('admin.dashboard.sp.cobaTreeGrid');
+    }
 }
