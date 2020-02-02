@@ -41,10 +41,10 @@
                         <td>{{$data->email_unit_kerja}}</td>                       
                         <td align="center">
                           <div class="btn btn-group">
-                            <a href="{{{ URL::to('unitKerja/edit/'.$data->id_unit_kerja.'') }}}" class="btn btn-primary" title="Edit Data">
+                            <a href="{{{ URL::to('unitKerja/edit/'.$data->id_unit_kerja.'') }}}" class="btn btn-xs btn-primary" title="Edit Data">
                               <i class="fa fa-edit"></i>
                             </a>
-                            <a href="{{{ URL::to('unitKerja/delete/'.$data->id_unit_kerja.'') }}}" class="btn btn-danger" title="Hapus Data">
+                            <a href="{{{ URL::to('unitKerja/delete/'.$data->id_unit_kerja.'') }}}" class="btn btn-xs btn-danger" title="Hapus Data">
                               <i class="fa fa-trash"></i>
                             </a>
                           </div>

@@ -10,6 +10,7 @@
       
      <link href="{{URL::asset('admin/bootstrap/css/bootstrap.css')}}"  rel="stylesheet"  type="text/css"> 
      <link href="{{URL::asset('admin/bootstrap/css/datepicker.css')}}"  rel="stylesheet"  type="text/css"> 
+     <link href="{{URL::asset('css/docs.css')}}" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link href="{{URL::asset('admin/bootstrap/css/font-awesome.min.css')}}"  rel="stylesheet"  type="text/css" >
@@ -147,12 +148,17 @@
 <script src="{{ URL::asset('admin/dist/js/app.min.js') }}"></script>
 <script src="{{ URL::asset('admin/dist/js/pages/dashboard.js') }}"></script> 
 <script src="{{ URL::asset('admin/plugins/highcharts/highcharts.js') }}"></script>
+<script src="{{ URL::asset('admin/plugins/highcharts/grafik/jquery.highchartTable-min.js') }}"></script>
 <script src="{{ URL::asset('admin/plugins/select2/select2.js') }}"></script>
 <script src="{{ URL::asset('admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('admin/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
 <script src="{{ URL::asset('admin/plugins/toastr/build/toastr.min.js') }}"></script>
 
 <script src="{{url('treeView/dist/js/jquery.treegrid.min.js')}}"></script>
+<script src="{{url('js/bootstrap-affix.js')}}"></script>
+<script src="{{url('js/bootstrap-scrollspy.js')}}"></script>
+
+<script src="{{url('js/application.js')}}"></script>
 
   <script>
     toastr.options = {

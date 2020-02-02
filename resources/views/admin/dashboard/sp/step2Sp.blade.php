@@ -11,13 +11,17 @@
 @stop
 
 @section('content')
+    {{-- @if ($sp->status_sp == "Aktif")
+        <h2>Forbidden Access</h2>
+    @else --}}
     <div class="box box-primary">
         <div class="box-header">
             <ul id="progressbar" class="progressbar">
-                <li class="active">Pilih Tahun Anggaran</li>
-                <li class="active">Data SP Anggaran</li>
-                <li class="">Data Item Barang</li>
-                <li class="">Selesai</li>            
+                    <li class="active" style="width: 20%;">Pilih Tahun Anggaran</li>
+                    <li class="active" style="width: 20%;">Data SP Anggaran</li>
+                    <li class="" style="width: 20%;">Data Item Barang</li>
+                    <li class="" style="width: 20%;">Cetak dan Kirim</li>
+                    <li style="width: 20%;">Selesai</li>            
             </ul>
         </div>
         <hr>
@@ -81,10 +85,9 @@
                             @else 
                                 <option value=""> -- Pilih -- </option>
                             @endif
-                            <option value="BN.01.04/III.1/">BN.01.04/III.1/ : Belanja Barang Medis </option>
-                            <option value="BN.01.05/III.1/">BN.01.05/III.1/ : Belanja Barang Non Medis </option>
-                            <option value="BN.01.06/III.1/">BN.01.06/III.1/ : Belanja Barang Bahan Makanan </option>
-                            <option value="BN.01.07/III.1/">BN.01.07/III.1/ : Belanja Rehabilitasi Gedung </option>
+                            <option value="KU.02.01/XI.3.1/">KU.02.01/XI.3.1/ : Belanja Pegawai </option>
+                            <option value="KU.02.02/XI.3.1/">KU.02.02/XI.3.1/ : Belanja Barang </option>
+                            <option value="KU.02.03/XI.3.1/">KU.02.03/XI.3.1/ : Belanja Investasi </option>
                         </select>
                         <small class="help-block"></small>
 
@@ -100,7 +103,11 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label text-md-right" for="inputTgl">Tgl. SP </label>
                     <div class="col-md-3">
-                    <input type="date" id="tglsp" class="form-control" name="tglsp" value="{{$sp->tgl_sp}}" required>
+                    <input type="date" id="tglsp" class="form-control" name="tglsp" 
+                        @if ($id!=0)
+                            value="{{$sp->tgl_sp}}"
+                        @endif
+                    required>
                         {{-- <script>
                         $(function(){
                             $("#tglsp").datepicker({
@@ -115,7 +122,7 @@
             <div class="form-group">
                     <label class="col-md-4 control-label text-md-right" for="halsp">Perihal SP</label>
                     <div class="col-md-6">
-                        <textarea type="text" id="halsp" class="form-control" name="halsp" placeholder="Perihal SP" required>{{$sp->hal_sp}}</textarea>
+                        <textarea type="text" id="halsp" class="form-control" name="halsp" placeholder="Perihal SP" required>@if ($id!=0){{$sp->hal_sp}}@endif</textarea>
                         <small class="help-block"></small>
                     </div>
             </div>
@@ -179,17 +186,20 @@
              </div>
           </div>
         </div>
-        <div class="box-footer">
-                <ul class="pager">
-                        <li class="previous success">
-                          <a href="">&larr; KEMBALI STEP 1</a>
-                        </li>
-                        <li class="next">
-                          <a href="{{url('spp/tambah/step3/'.$tahun.'/'.$sp->id_sp)}}"><i class="icon icon-ok"></i> LANJUT STEP 3 &rarr;</a>
-                        </li>
-                      </ul>
+        <div class="bg-orange color-palette" style="padding:2px 15px 2px 15px">
+            <ul class="pager">
+                <li class="previous success">
+                    <a href="">&larr; KEMBALI STEP 1</a>
+                </li>
+                <li class="next">
+                    @if ($id!=0)
+                        <a href="{{url('spp/tambah/step3/'.$tahun.'/'.$sp->id_sp)}}"><i class="icon icon-ok"></i> LANJUT STEP 3 &rarr;</a>
+                    @endif
+                </li>
+            </ul>
         </div>
         </form>
     </div>
 
+    {{-- @endif --}}
 @endsection

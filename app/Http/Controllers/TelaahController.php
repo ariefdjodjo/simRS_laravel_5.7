@@ -18,6 +18,7 @@ use App\Telaah as Telaah;
 use App\UsulanLampiran as Lampiran;
 use App\UsulanBarang as Barang;
 use App\MstBarang as MstBarang;
+use App\Exports\LaporanTelaah;
 
 class TelaahController extends Controller
 {
@@ -31,8 +32,8 @@ class TelaahController extends Controller
             $usulan = DB::table('usulan')
             ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
             ->where('usulan.tahun', '=', $tahun)
-            ->where('usulan.tgl_kirim', '!=', NULL)
-            ->where('usulan.dibaca', '=', NULL)
+            ->whereNotNull('usulan.tgl_kirim')
+            ->whereNull('usulan.dibaca')
             ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum, usulan.no_usulan, usulan.tgl_usulan, usulan.perihal_usulan, usulan.id_usulan, usulan.dibaca'))
             ->groupBy('usulan_barang.id_usulan', 'usulan.no_usulan', 'usulan.tgl_usulan', 'usulan.perihal_usulan', 'usulan.id_usulan', 'usulan.dibaca')
             ->get();
@@ -42,8 +43,8 @@ class TelaahController extends Controller
             $usulan = DB::table('usulan')
             ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
             ->where('usulan.tahun', '=', $tahun)
-            ->where('usulan.tgl_kirim', '!=', NULL)
-            ->where('usulan.dibaca', '!=', NULL)
+            ->whereNotNull('usulan.tgl_kirim')
+            ->whereNotNull('usulan.dibaca')
             ->whereNotIn('usulan.id_usulan', function($query){
                 $query->select('telaah.id_usulan')->from('telaah');   
             })
@@ -59,19 +60,19 @@ class TelaahController extends Controller
             ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
             ->join('telaah', 'usulan.id_usulan', '=', 'telaah.id_usulan')
             ->where('usulan.tahun', '=', $tahun)
-            ->where('usulan.tgl_kirim', '!=', NULL)
-            ->where('usulan.dibaca', '!=', NULL)
+            ->whereNotNull('usulan.tgl_kirim')
+            ->whereNotNull('usulan.dibaca')
             ->whereIn('usulan.id_usulan', function($query){
                 $query->select('telaah.id_usulan')->from('telaah');   
             })
-            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum, usulan.no_usulan, usulan.tgl_usulan, usulan.perihal_usulan, usulan.id_usulan, usulan.dibaca, telaah.tgl_kirim'))
-            ->groupBy('usulan_barang.id_usulan', 'usulan.no_usulan', 'usulan.tgl_usulan', 'usulan.perihal_usulan', 'usulan.id_usulan', 'usulan.dibaca', 'telaah.tgl_kirim')
+            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum, usulan.no_usulan, usulan.tgl_usulan, usulan.perihal_usulan, usulan.id_usulan, usulan.dibaca, telaah.tgl_kirim, telaah.id_telaah'))
+            ->groupBy('usulan_barang.id_usulan', 'usulan.no_usulan', 'usulan.tgl_usulan', 'usulan.perihal_usulan', 'usulan.id_usulan', 'usulan.dibaca', 'telaah.tgl_kirim', 'telaah.id_telaah')
             ->get();
             
             $status = 2;
         }
         
-        return view('admin.dashboard.telaah.usulanMasuk', compact('tahun', 'th', 'usulan', 'status'));
+        return view('admin.dashboard.telaah.usulanMasuk', compact('tahun', 'th', 'usulan', 'status', 'kriteria'));
     }
 
     protected function baca($id) {
@@ -140,30 +141,42 @@ class TelaahController extends Controller
 
     public function prosesAnalisis($id){
         $tahun = date('Y');
+        $telaah = Telaah::find($id);
 
-        $barang = Barang::where('id_usulan', '=', $id)->get();
+        $barang = Barang::where('id_usulan', '=', $telaah->id_usulan)->get();
 
         try{
             foreach($barang as $item) {
-                $data = Barang::find($item->id_barang_usulan);
-                $harga = Barang::where('usulan_barang.id_usulan', '=', $id)
+                $harga = Barang::where('usulan_barang.id_usulan', '=', $telaah->id_usulan)
                     ->leftjoin('ref_master_barang', 'usulan_barang.nama_barang', '=', 'ref_master_barang.nama_barang')
                     ->leftjoin('ref_standart_biaya', 'ref_standart_biaya.id_master_barang', '=', 'ref_master_barang.id_master_barang')
                     ->select('ref_standart_biaya.harga_satuan')
                     ->where('ref_standart_biaya.tahun', '=', $tahun)
-                    ->where('usulan_barang.id_barang_usulan', '=', $data->id_barang_usulan)
+                    ->where('usulan_barang.id_barang_usulan', '=', $item->id_barang_usulan)
                     ->first();
-                $data->harga_telaah = $harga->harga_satuan;
+                // $harga  = DB::table('ref_master_barang')
+                //     ->join('ref_standart_biaya', 'ref_standart_biaya.id_master_barang', '=', 'ref_master_barang.id_master_barang')
+                //     ->where('ref_master_barang.nama_barang', 'like', '%'.$item->nama_barang.'%')
+                //     ->where('ref_standart_biaya.tahun', 'like', $tahun)
+                //     ->first();
+                if($harga == "") {
+                    $harganya = $item->harga_usulan;
+                } else {
+                    $harganya = $harga->harga_satuan;
+                }
+                $data = Barang::find($item->id_barang_usulan);
+                $data->harga_telaah = $harganya;
                 $data->update();
             }
-            return Redirect('telaah/tambahTelaah/'.$data->id_usulan.'/analisisHarga')->with(getNotif('Data '.$data->no_telaah.' berhasil dilakukan analisis harga', 'success'));
+            return Redirect('telaah/tambahTelaah/'.$id.'/analisisHarga')->with(getNotif('Data '.$telaah->no_telaah.' berhasil dilakukan analisis harga', 'success'));
         } catch(Exception $e) {
             return back()->with(getNotif('Gagal', "Gagal dalam Menganalisis Harga Barang")); 
         }   
     }
 
     public function analisisHarga($id) {
-        $barang = Barang::where('usulan_barang.id_usulan', '=', $id)
+        $telaah     = Telaah::find($id);
+        $barang = Barang::where('usulan_barang.id_usulan', '=', $telaah->id_usulan)
             ->leftjoin('ref_master_barang', 'usulan_barang.nama_barang', '=', 'ref_master_barang.nama_barang')
             ->leftjoin('ref_standart_biaya', 'ref_standart_biaya.id_master_barang', '=', 'ref_master_barang.id_master_barang')
             ->where('ref_standart_biaya.tahun', '=', '2019')
@@ -182,17 +195,17 @@ class TelaahController extends Controller
 
     public function detailTelaah($id){
         $data = DB::table('telaah')
-            ->where('telaah.id_usulan', '=', $id)
+            ->where('telaah.id_telaah', '=', $id)
             ->first();
 
         $usulan = DB::table('usulan')
             ->join('mst_unit_kerja', 'usulan.id_unit_kerja', '=', 'mst_unit_kerja.id_unit_kerja')
             ->join('ref_ttd_usulan', 'usulan.pengirim_usulan', '=', 'ref_ttd_usulan.id_ttd_usulan')
-            ->where('id_usulan', '=', $id)
+            ->where('usulan.id_usulan', '=', $data->id_usulan)
             ->first();
 
         $barang = DB::table('usulan_barang')
-        ->where('id_usulan', '=', $id)
+        ->where('id_usulan', '=', $data->id_usulan)
         ->get();
 
         $ttdTelaah  = TtdTelaah::all();
@@ -229,7 +242,8 @@ class TelaahController extends Controller
     }
 
     public function analisisKebutuhan($id){
-        $barang = Barang::where('usulan_barang.id_usulan', '=', $id)
+        $telaah = Telaah::find($id);
+        $barang = Barang::where('usulan_barang.id_usulan', '=', $telaah->id_usulan)
             ->leftjoin('ref_master_barang', 'usulan_barang.nama_barang', '=', 'ref_master_barang.nama_barang')
             ->leftjoin('ref_standart_biaya', 'ref_standart_biaya.id_master_barang', '=', 'ref_master_barang.id_master_barang')
             ->where('ref_standart_biaya.tahun', '=', '2019')
@@ -277,11 +291,11 @@ class TelaahController extends Controller
         ->join('mst_unit_kerja', 'usulan.id_unit_kerja', '=', 'mst_unit_kerja.id_unit_kerja')
         ->join('ref_ttd_usulan', 'usulan.pengirim_usulan', '=', 'ref_ttd_usulan.id_ttd_usulan')
         ->join('ref_ttd_telaah', 'telaah.penandatangan', '=', 'ref_ttd_telaah.id_ttd_telaah')
-        ->where('telaah.id_usulan', '=', $id)
+        ->where('telaah.id_telaah', '=', $id)
         ->first();
 
         $barang = DB::table('usulan_barang')
-        ->where('id_usulan', '=', $id)
+        ->where('id_usulan', '=', $data->id_usulan)
         ->get();
 
         $harga = 0;
@@ -304,7 +318,7 @@ class TelaahController extends Controller
             ->join('mst_unit_kerja', 'usulan.id_unit_kerja', '=', 'mst_unit_kerja.id_unit_kerja')
             ->join('ref_ttd_usulan', 'usulan.pengirim_usulan', '=', 'ref_ttd_usulan.id_ttd_usulan')
             ->join('ref_ttd_telaah', 'telaah.penandatangan', '=', 'ref_ttd_telaah.id_ttd_telaah')
-            ->where('telaah.id_usulan', '=', $id)
+            ->where('telaah.id_telaah', '=', $id)
             ->first();
 
         $tujuanSp = DB::table('ref_email')->where('level_user', '=', 4)->first();
@@ -342,11 +356,14 @@ class TelaahController extends Controller
         ->join('mst_unit_kerja', 'usulan.id_unit_kerja', '=', 'mst_unit_kerja.id_unit_kerja')
         ->join('ref_ttd_usulan', 'usulan.pengirim_usulan', '=', 'ref_ttd_usulan.id_ttd_usulan')
         ->join('ref_ttd_telaah', 'telaah.penandatangan', '=', 'ref_ttd_telaah.id_ttd_telaah')
-        ->where('telaah.id_usulan', '=', $id)
+        ->where('telaah.id_telaah', '=', $id)
         ->first();
-
+        $nol = 0;
         $barang = DB::table('usulan_barang')
-        ->where('id_usulan', '=', $id)
+        ->where('id_usulan', '=', $data->id_usulan)
+        ->whereNotNull('jumlah_harga_telaah')
+        ->Where('jumlah_harga_telaah', '!=', $nol)
+        ->where('id_usulan', '=', $data->id_usulan)
         ->get();
 
         $harga = 0;
@@ -363,6 +380,7 @@ class TelaahController extends Controller
         $pdf = PDF::loadview('admin.dashboard.telaah.pdfTelaah', compact('data', 'barang', 'id', 'harga', 'qty', 'total', 'jumlah'));
 
         return $pdf->stream();
+        // return response()->json($barang);
     }
 
     public function rekapUsulan($tahun){
@@ -379,6 +397,44 @@ class TelaahController extends Controller
             ->get();
 
         return view('admin.dashboard.telaah.rekapUsulanTelaah',compact('tahun', 'th', 'data_jenis', 'usulan','detail'));
+    }
+
+    public function pdfRekapUsulanTelaah($tahun, $jenis) {
+        if($jenis == 0) {
+            $usulan = DB::table('usulan')
+            ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
+            ->join('telaah', 'usulan.id_usulan', '=', 'telaah.id_usulan')
+            ->where('usulan.tahun', '=', $tahun)
+            ->where('usulan.tgl_kirim', '!=', NULL)
+            ->where('telaah.tgl_kirim', '!=', NULL)
+            ->select(DB::raw('usulan.jenis_usulan, sum(usulan_barang.jumlah_usulan) as jum_usulan, sum(usulan_barang.jumlah_harga_telaah) as jum_telaah, usulan.jenis_usulan'))
+            ->groupBy( 'usulan.jenis_usulan')
+            ->get();
+        
+            $pdf = PDF::loadview('admin.dashboard.laporan.pdfRekapUsulanTelaah', compact('usulan', 'tahun'));
+        
+            return $pdf->stream('Detail_Telaah_'.getJenis($jenis));
+        } else {
+            $usulan = DB::table('usulan')
+            ->join('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
+            ->join('telaah', 'usulan.id_usulan', '=', 'telaah.id_usulan')
+            ->where('telaah.tgl_kirim', '!=', NULL)
+            ->where('usulan.jenis_usulan', '=', $jenis)
+            ->where('usulan.tahun', '=', $tahun)
+            ->select(DB::raw('usulan.perihal_usulan, telaah.no_telaah, telaah.tgl_telaah, sum(usulan_barang.jumlah_usulan) as jum_usulan, sum(usulan_barang.jumlah_harga_telaah) as jum_telaah'))
+            ->groupBy( 'usulan.perihal_usulan', 'telaah.no_telaah', 'telaah.tgl_telaah')
+            ->get();
+
+            $pdf = PDF::loadview('admin.dashboard.laporan.pdfDetailUsulanTelaah', compact('usulan', 'tahun', 'jenis'))->setPaper('a4', 'landscape');
+        
+            return $pdf->stream();
+        }
+        
+    }
+
+    public function eksportTelaah($tahun){
+        $tgl = date('dmY_h');
+        return (new LaporanTelaah($tahun))->download($tgl.'_TA'.$tahun.'_Laporan_Telaah.xlsx');
     }
 
     public function rekapUsulanJenis($tahun, $jenis){ 
@@ -402,8 +458,8 @@ class TelaahController extends Controller
             ->leftJoin('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
             ->where('usulan.tahun', '=', $tahun)
             ->where('telaah.tgl_kirim', '=', NULL)
-            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum_usulan, sum(usulan_barang.jumlah_harga_telaah) as jum_telaah, telaah.no_telaah, telaah.id_usulan, telaah.tgl_telaah, usulan.perihal_usulan, telaah.tgl_kirim'))
-            ->groupBy( 'telaah.id_usulan', 'telaah.no_telaah', 'telaah.tgl_telaah', 'usulan.perihal_usulan', 'telaah.tgl_kirim')
+            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum_usulan, sum(usulan_barang.jumlah_harga_telaah) as jum_telaah, telaah.no_telaah, telaah.id_usulan, telaah.tgl_telaah, telaah.id_telaah, usulan.perihal_usulan, telaah.tgl_kirim'))
+            ->groupBy( 'telaah.id_usulan', 'telaah.no_telaah', 'telaah.tgl_telaah', 'usulan.perihal_usulan', 'telaah.tgl_kirim', 'telaah.id_telaah')
             ->get();
 
         return view('admin.dashboard.telaah.draftTelaahData',compact('tahun', 'th', 'data_jenis', 'telaah','detail'));
@@ -418,8 +474,8 @@ class TelaahController extends Controller
             ->leftJoin('usulan_barang', 'usulan.id_usulan', '=', 'usulan_barang.id_usulan')
             ->where('usulan.tahun', '=', $tahun)
             ->where('telaah.tgl_kirim', '!=', NULL)
-            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum_usulan, sum(usulan_barang.jumlah_harga_telaah) as jum_telaah, telaah.no_telaah, telaah.id_usulan, telaah.tgl_telaah, usulan.perihal_usulan, telaah.tgl_kirim'))
-            ->groupBy( 'telaah.id_usulan', 'telaah.no_telaah', 'telaah.tgl_telaah', 'usulan.perihal_usulan', 'telaah.tgl_kirim')
+            ->select(DB::raw('sum(usulan_barang.jumlah_usulan) as jum_usulan, sum(usulan_barang.jumlah_harga_telaah) as jum_telaah, telaah.no_telaah, telaah.id_usulan, telaah.tgl_telaah, usulan.perihal_usulan, telaah.tgl_kirim, telaah.id_telaah'))
+            ->groupBy( 'telaah.id_usulan', 'telaah.no_telaah', 'telaah.tgl_telaah', 'usulan.perihal_usulan', 'telaah.tgl_kirim', 'telaah.id_telaah')
             ->get();
 
         return view('admin.dashboard.telaah.daftarTelaah',compact('tahun', 'th', 'data_jenis', 'telaah','detail', 'level'));

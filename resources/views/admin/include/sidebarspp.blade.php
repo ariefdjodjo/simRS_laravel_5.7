@@ -37,8 +37,8 @@
               </a>
               <ul class="treeview-menu collapse">
                 <li><a href="{{{URL::to('spp/tambah/step1/0')}}}"><i class="fa fa-plus"></i> Tambah SPP</a></li>   
-                <li><a href="{{{URL::to('spp/data')}}}"><i class="fa fa-tags"></i> Data SPP</a></li>
-                <li><a href="{{{URL::to('spp/Laporan')}}}"><i class="fa fa-file"></i> Laporan SPP</a></li>    
+                <li><a href="{{{URL::to('spp/data/0')}}}"><i class="fa fa-tags"></i> Data SPP</a></li>
+                <li><a href="{{{URL::to('spp/laporan/0')}}}"><i class="fa fa-file"></i> Laporan SPP</a></li>    
               </ul>
             </li>
 
@@ -70,22 +70,3 @@
         <!-- /.sidebar -->
       </aside>
 
-      <!-- Modal -->
-      <div class="modal fade" id="myModalq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="myModalLabelq">Modal title</h4>
-            </div>
-            <div class="modal-bodyq">
-              ...
-            </div>
-            <div class="modal-footerq">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- end of modal -->

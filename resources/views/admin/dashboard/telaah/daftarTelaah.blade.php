@@ -71,9 +71,9 @@
                                     <a href="{{url('telaah/tambahTelaah/'.$data->id_usulan.'/detailTelaah')}}" class="btn btn-primary btn-sm"><i class="fa fa-loop"></i> Detail</a>
                                 @else 
                                     @if($level == 4)
-                                        <a href="{{url('spp/telaah/'.$data->id_usulan.'/detail')}}" class="btn btn-primary btn-sm"><i class="fa fa-loop"></i> Detail</a>
+                                        <a href="{{url('spp/telaah/'.$data->id_telaah.'/detail')}}" class="btn btn-primary btn-sm"><i class="fa fa-loop"></i> Detail</a>
                                     @else 
-                                        <a href="{{url('telaah/selesai/'.$data->id_usulan)}}" class="btn btn-primary btn-sm"><i class="fa fa-loop"></i> Detail</a>
+                                        <a href="{{url('telaah/selesai/'.$data->id_telaah)}}" class="btn btn-primary btn-sm"><i class="fa fa-loop"></i> Detail</a>
                                     @endif
                                     
                                 @endif

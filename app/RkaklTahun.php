@@ -11,4 +11,10 @@ class RkaklTahun extends Model
 	protected $primaryKey = 'tahun';
 
     protected $fillable = ['tahun', 'kode_program', 'uraian_program'];
+
+    public function subAlokasi(){
+        return $this->hasMany('App\\RkaklSubAlokasi', 'tahun', 'tahun');
+    }
 }
+
+

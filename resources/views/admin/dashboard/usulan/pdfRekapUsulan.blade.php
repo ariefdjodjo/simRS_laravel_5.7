@@ -12,34 +12,33 @@
                 <hr>
                 <br>
             </div>
-                <table class="grid" width="100%">
-                        <thead>
-                            <tr>
-                                <th width="5%">No</th>
-                                <th width="45%">Jenis Usulan</th>
-                                <th width="35%">RAB</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($usulan as $data)
-                                <tr>
-                                    <td>{{$urut++}}</td>
-                                    <td>{{getJenis($data->jenis_usulan)}}</td>
-                                    <td style="text-align:right">{{getNumber($data->jum_usulan)}}</td>
-                                </tr>
-        
-                                <?php $total+=$data->jum_usulan; ?>
-                            @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="2">Total</td>
-                                <td style="text-align:right">{{getNumber($total)}}</td>
-                            </tr>
-                            
-                        </tfoot>
-                    </table>
+            <table class="grid" width="100%">
+                <thead>
+                    <tr>
+                        <th width="5%">No</th>
+                        <th width="45%">Jenis Usulan</th>
+                        <th width="35%">RAB</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($usulan as $data)
+                        <tr>
+                            <td>{{$urut++}}</td>
+                            <td>{{getJenis($data->jenis_usulan)}}</td>
+                            <td style="text-align:right">{{getNumber($data->jum_usulan)}}</td>
+                        </tr>
 
+                        <?php $total+=$data->jum_usulan; ?>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">Total</td>
+                        <td style="text-align:right">{{getNumber($total)}}</td>
+                    </tr>
+                    
+                </tfoot>
+            </table>
         </div>
     </body>
 </html>

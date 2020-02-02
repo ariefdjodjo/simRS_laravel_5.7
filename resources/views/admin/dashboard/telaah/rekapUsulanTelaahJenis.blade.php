@@ -41,8 +41,8 @@
                     </td>
                     <td width="30%" style="text-align:right">
                         <div class="btn-group">
-                            <a href="{{URL::to('/rekapUsulan/pdf/'.$tahun)}}" target="blank" class="btn btn-info btn-sm"><i class="fa fa-print"></i> Cetak PDF</a>
-                            <a href="{{URL::to('/rekapUsulan/excel/'.$tahun)}}" class="btn btn-warning btn-sm"><i class="fa fa-file-excel-o"></i> Eksport Excel</a>
+                            <a href="{{URL::to('telaah/pdfLaporanTelaah/'.$tahun.'/'.$jenis)}}" target="blank" class="btn btn-info btn-xs"><i class="fa fa-print"></i> Cetak PDF</a>
+                            <a href="{{URL::to('laporan/telaah/eksport/'.$tahun)}}" class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i> Eksport Excel</a>
                         </div>
                     </td>
                 </tr>

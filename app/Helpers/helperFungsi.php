@@ -145,7 +145,22 @@
 
 	/** function untuk menampilkan kode klasifikasi */
     function getNumber($value) {
-        $format = number_format($value,2,',','.');
+		if($value === "") {
+			$format = number_format(0,2,',','.');
+		} else {
+			$format = number_format($value,2,',','.');
+		}
+        
+        return $format;
+	}
+	
+	function getNumberTanpaKoma($value) {
+		if($value === "") {
+			$format = number_format(0,0,',','.');
+		} else {
+			$format = number_format($value,0,',','.');
+		}
+        
         return $format;
     }
 

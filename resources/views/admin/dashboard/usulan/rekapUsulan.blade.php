@@ -39,15 +39,16 @@
             @else
             <table width="100%">
                 <tr>
-                    <td width="70%">
+                    <td width="60%">
                         <div class="box-header">
                             <b><h2 style="padding:0;">Data Usulan</h2></b>
                         </div>
                     </td>
-                    <td width="30%" style="text-align:right">
+                    <td width="40%" style="text-align:right">
                         <div class="btn-group">
-                            <a href="{{URL::to('/rekapUsulan/pdf/'.$tahun)}}" target="blank" class="btn btn-info btn-sm"><i class="fa fa-print"></i> Cetak PDF</a>
-                            <a href="{{URL::to('/rekapUsulan/excel/'.$tahun)}}" class="btn btn-warning btn-sm"><i class="fa fa-file-excel-o"></i> Eksport Excel</a>
+                            <a href="{{URL::to('/rekapUsulan/pdf/'.$tahun)}}" target="blank" class="btn btn-warning btn-xs"><i class="fa fa-print"></i> Cetak PDF</a>
+                            <a href="{{URL::to('/laporan/usulan/eksport/'.$tahun)}}" target="blank" class="btn btn-primary btn-xs"><i class="fa fa-file-excel-o"></i> Eksport Usulan</a>
+                            {{-- <a href="{{URL::to('/laporan/barangUsulan/eksport/'.$tahun)}}" target="blank" class="btn btn-info btn-xs"><i class="fa fa-file-excel-o"></i> Eksport Item Barang Usulan</a> --}}
                         </div>
                     </td>
                 </tr>
@@ -59,8 +60,9 @@
                 <thead>
                     <tr>
                         <th width="5%">No</th>
-                        <th width="15%">Uraian</th>
-                        <th width="15%">RAB</th>
+                        <th width="15%">Jenis Usulan</th>
+                        <th width="5%">Jumlah Usulan</th>
+                        <th width="15%">RAB Usulan</th>
                         <th width="5%">#</th>
                     </tr>
                 </thead>
@@ -69,17 +71,20 @@
                         <tr>
                             <td>{{$urut++}}</td>
                             <td>{{getJenis($data->jenis_usulan)}}</td>
+                            <td style="text-align:center">{{getNumberTanpaKoma($data->countUsulan)}}</td>
                             <td style="text-align:right">{{getNumber($data->jum_usulan)}}</td>
-                            <td style="text-align:center"><a href="{{URL::to('/rekapDetailUsulan/'.$tahun.'/'.$data->jenis_usulan)}}" class="btn btn-primary">Detail</a></td>
+                            <td style="text-align:center"><a href="{{URL::to('/rDetailUsulan/'.$tahun.'/'.$data->jenis_usulan)}}" class="btn btn-primary btn-sm">Detail</a></td>
                         </tr>
 
                         <?php $total+=$data->jum_usulan; ?>
                     @endforeach
                 </tbody>
                 <tfoot>
-                    <td colspan="2">Total</td>
-                    <td style="text-align:right">{{getNumber($total)}}</td>
-                    <td></td>
+                    <tr>
+                        <td colspan="3" style="text-align:right"><b>Total</b></td>
+                        <td style="text-align:right"><b>{{getNumber($total)}}</b></td>
+                        <td></td>
+                    </tr>
                 </tfoot>
             </table>
             

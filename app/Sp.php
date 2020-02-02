@@ -30,12 +30,11 @@ class Sp extends Model
     }
     
     public function sA(){
-        return $this->belongsTo('App\\RkaklSubAlokasi', 'id_sub_alokasi', 'id_sub_alokasi');
+        return $this->belongsTo('App\\RkaklSubAlokasi', 'id_sub_alokasi', 'id_sub_alokasi')->with('akun', 'ppk');
     }
 
     public function telaah(){
-        return $this->belongsTo('App\\Telaah','id_telaah', 'id_telaah');
-        //return $this->hasManyThrough('App\\Usulan', 'App\\Telaah', 'id_usulan', 'id_usulan', 'id_telaah');
+        return $this->belongsTo('App\\Telaah','id_telaah', 'id_telaah')->with('usulan', 'ttd');
     }
 
     public function barangSp(){

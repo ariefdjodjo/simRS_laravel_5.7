@@ -44,7 +44,21 @@
     ?>
     <div class="box box-primary">
         <div class="box-header">
-            <b><h3>Data Usulan</h3></b>
+            <b>
+                <h3>
+                Data Usulan 
+                @if ($kriteria=='belum')
+                    Belum Dibaca
+                @elseif($kriteria=='belumProses')
+                    Belum Proses Telaah
+                @else 
+                    Sudah Diproses Telaah
+                @endif
+                <br>
+                Tahun {{$tahun}}
+                </h3>
+
+            </b>
         </div>
         <div class="box-body">
             @if($tahun==0)
@@ -80,7 +94,7 @@
                                 @else 
                                     <a href="{{url('telaah/detailUsulan/'.$data->id_usulan.'')}}" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> Detail</a>
                                     @if($data->tgl_kirim == NULL)
-                                    <a href="{{url('telaah/tambahTelaah/'.$data->id_usulan.'/detailTelaah')}}" class="btn btn-success btn-sm"><i class="fa fa-book"></i> Detail Telaah</a>
+                                    <a href="{{url('telaah/tambahTelaah/'.$data->id_telaah.'/detailTelaah')}}" class="btn btn-success btn-sm"><i class="fa fa-book"></i> Detail Telaah</a>
                                     @else 
                                     <a href="{{url('telaah/selesai/'.$data->id_usulan)}}" class="btn btn-warning btn-sm"><i class="fa fa-print"></i> Cetak Telaah</a>
                                     @endif

@@ -32,6 +32,7 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="{{{URL::to('rekapUsulan/0')}}}"><i class="fa fa-copy"></i> Rekap Usulan </a></li>
+                {{-- <li><a href="{{URL::to('pencarian/usulan/0')}}"><i class="fa fa-search"></i>Telusur Dokumen</a></li> --}}
               <!--  <li><a href="{{{URL::to('eksportUsulan/')}}}"><i class="fa fa-file-excel-o"></i> Eksport Data Usulan </a></li> -->
               </ul>
             </li>

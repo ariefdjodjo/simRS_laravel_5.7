@@ -25,6 +25,10 @@ class RkaklSubAlokasi extends Model
         'id_ppk'
     ];
 
+    public function tahun(){
+        return $this->belongsTo('App\\RkaklTahun', 'tahun', 'tahun');
+    }
+
     public function kegiatan(){
         return $this->belongsTo('App\\RkaklKegiatan');
     }
@@ -35,5 +39,9 @@ class RkaklSubAlokasi extends Model
 
     public function akun(){
         return $this->belongsTo('App\\RkaklAkun', 'id_akun', 'id_akun');
+    }
+
+    public function ppk(){
+        return $this->belongsTo('App\\MstPpk', 'id_ppk', 'id_ppk');
     }
 }

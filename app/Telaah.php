@@ -23,4 +23,12 @@ class Telaah extends Model
 
         return $data;
     }
+
+    public function usulan(){
+        return $this->belongsTo('App\\Usulan', 'id_usulan', 'id_usulan')->with('unitKerja', 'barangUsulan', 'lampiranUsulan');
+    }
+
+    public function ttd(){
+        return $this->belongsTo('App\\TtdTelaah', 'penandatangan', 'id_ttd_telaah');
+    }
 }

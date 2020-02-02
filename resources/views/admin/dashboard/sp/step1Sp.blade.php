@@ -1,3 +1,6 @@
+
+    
+
 @extends('admin.layout.master')
 @section('breadcrump')
   <h1>
@@ -11,13 +14,18 @@
 @stop
 
 @section('content')
+    {{-- @if ($sp->status_sp == "Aktif")
+        <h2>Forbidden Access</h2>
+    @else --}}
+
     <div class="box box-primary">
         <div class="box-header">
             <ul id="progressbar" class="progressbar">
-                <li class="active">Pilih Tahun Anggaran</li>
-                <li class="">Data SP Anggaran</li>
-                <li class="">Data Item Barang</li>
-                <li class="">Selesai</li>            
+                <li class="active" style="width: 20%;">Pilih Tahun Anggaran</li>
+                <li class="" style="width: 20%;">Data SP Anggaran</li>
+                <li class="" style="width: 20%;">Data Item Barang</li>
+                <li class="" style="width: 20%;">Cetak dan Kirim</li>
+                <li style="width: 20%;">Selesai</li>          
             </ul>
         </div>
         <hr>
@@ -45,11 +53,12 @@
                 </div>
         </div>
         <hr>
-        <div class="box-footer">
+        <div class="bg-orange color-palette">
             <div class="col-md-6"></div>
             <div class="col-md-6"><button type="submit" class="btn btn-sm btn-success">Lantjut</button></div>
         </div>
         </form>
     </div>
-
+    {{-- @endif --}}
 @endsection
+

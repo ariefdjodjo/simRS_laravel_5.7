@@ -17,6 +17,7 @@
     $urut = 1;
     $urut_barang = 1;
     $total = 0;
+
 ?>
 <div class="box">
     <h3 align="center"><b>DATA USULAN PENGADAAN</b></h3>

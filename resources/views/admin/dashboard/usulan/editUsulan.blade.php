@@ -45,7 +45,9 @@
                 <option value="5203">Barang Rumah Tangga</option>
                 <option value="5204">Perbekalan Obat</option>
                 <option value="5205">AMHP/BMHP</option>
-                <option value="5206">Jasa</option>
+                <option value="5206">Belanja Operasional</option>
+                <option value="5207">Jasa</option>
+                <option value="5208">Bahan Makanan</option>
                 <option value="5301">Investasi Alat Kesehatan</option>
                 <option value="5302">Investasi Alat Non Kesehatan</option>
                 <option value="5303">Investasi Perangkat Pengolah Data</option>

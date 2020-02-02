@@ -176,7 +176,7 @@
                                                                   <td width="30%"><b>Nama Barang</b></td>
                                                                   <td width="70%">
                                                                     <select name="nama_barang" id="nama_barang{{$item->id_barang_usulan}}">
-                                                                        <option value="{{$item->nama_barang}}">{{$item->nama_barang}}</option>
+                                                                        <option value="{{$item->nama_barang}}" >{{$item->nama_barang}}</option>
                                                                         <option value="">--Pilih Barang--</option>
                                                                         @foreach ($mstBarang as $barang)
                                                                               <option value="{{$barang->nama_barang}}">{{$barang->nama_barang}}</option>
@@ -288,100 +288,99 @@
 
 <!-- modal tambah barang -->
 <div class="modal modal-default fade" id="tambahBarang">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Tambah Barang</h4>
-            </div>
-            <div class="modal-body">
-              <div class="box-body">
-                <form  role="form" method="POST" action="{{ url('usulan/tambahBarang/'.$usulan->id_usulan) }}">
-                  @csrf
-                  
-                    <table class="table" width="100%">
-                      <tr>
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Tambah Barang</h4>
+        </div>
+        <div class="modal-body">
+            <div class="box-body">
+            <form  role="form" method="POST" action="{{ url('usulan/tambahBarang/'.$usulan->id_usulan) }}">
+                @csrf
+                <table class="table" width="100%">
+                    <tr>
                         <td width="30%"><b>Nama Barang</b></td>
                         <td width="70%">
-                          <select name="namaBarang" id="namaBarang">
-                              <option value="">--Pilih Barang--</option>
-                              @foreach ($mstBarang as $barang)
+                            <select name="namaBarang" id="namaBarang">
+                                <option value="">--Pilih Barang--</option>
+                                @foreach ($mstBarang as $barang)
                                     <option value="{{$barang->id_master_barang}}">{{$barang->nama_barang}}</option>
-                              @endforeach
-                          </select>
-                          <input type="hidden" name="nama_barang" id="nama_barang" >
+                                @endforeach
+                            </select>
+                            <input type="hidden" name="nama_barang" id="nama_barang">
+                            
                         </td>
-                      </tr>
-                      <tr>
+                    </tr>
+                    <tr>
                         <td valign="top"><b>Spesifikasi</b></td>
                         <td>
-                          <textarea name="spesifikasi" id="spesifikasi" class="form-control col-md"></textarea>
+                            <input type="text" name="spesifikasi" id="spek" class="form-control input-md">
                         </td>
-                      </tr>
-                      <tr>
+                    </tr>
+                    <tr>
                         <td><b>Kebutuhan</b></td>
                         <td>
-                          <input id="kebutuhan" type="text" name="kebutuhan" class="form-control input-md" value="{{ old('kebutuhan') }}" required autofocus placeholder="Kebutuhan">
+                            <input id="kebutuhan" type="text" name="kebutuhan" class="form-control input-md" value="{{ old('kebutuhan') }}" required autofocus placeholder="Kebutuhan">
                         </td>
-                      </tr>
-                      <tr>
-                          <td><b> Satuan</b></td>
-                          <td>
-                                <select name="satuan" id="satuan"  class="form-control" required>
-                                    <option value="">-- pilih Satuan --</option>
-                                    <option value="Kilogram">Kilogram</option>
-                                    <option value="m2">m2</option>
-                                    <option value="Gram">Gram</option>
-                                    <option value="Amp">Amp</option>
-                                    <option value="Tablet">Tablet</option>
-                                    <option value="mg">mg</option>
-                                    <option value="inj">inj</option>
-                                    <option value="Unit">Unit</option>
-                                    <option value="Buah">Buah</option>
-                                    <option value="Paket">Paket</option>
-                                    <option value="Rim">Rim</option>
-                                    <option value="Box">Box</option>
-                                    <option value="Dosin">Dosin</option>
-                                    <option value="Lembar">Lembar</option>
-                                    <option value="Botol">Botol</option>
-                                    <option value="Pcs">Pcs</option>
-                                    <option value="Liter">Liter</option>
-                                    <option value="ml">ml</option>
-                                </select>
-                          </td>
-                      </tr>
-                      <tr>
-                          <td><b>Harga Satuan</b></td>
-                          <td>
-                              <input type="text" name="harga" id="harga" class="form-control" placeholder="Harga Satuan" required>
-                          </td>
-                      </tr>
+                    </tr>
+                    <tr>
+                        <td><b> Satuan</b></td>
+                        <td>
+                            <select name="satuan" id="satuan"  class="form-control" required>
+                                <option value="">-- pilih Satuan --</option>
+                                <option value="Kilogram">Kilogram</option>
+                                <option value="m2">m2</option>
+                                <option value="Gram">Gram</option>
+                                <option value="Amp">Amp</option>
+                                <option value="Tablet">Tablet</option>
+                                <option value="mg">mg</option>
+                                <option value="inj">inj</option>
+                                <option value="Unit">Unit</option>
+                                <option value="Buah">Buah</option>
+                                <option value="Paket">Paket</option>
+                                <option value="Rim">Rim</option>
+                                <option value="Box">Box</option>
+                                <option value="Dosin">Dosin</option>
+                                <option value="Lembar">Lembar</option>
+                                <option value="Botol">Botol</option>
+                                <option value="Pcs">Pcs</option>
+                                <option value="Liter">Liter</option>
+                                <option value="ml">ml</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Harga Satuan</b></td>
+                        <td>
+                            <input type="text" name="harga" id="harga" class="form-control" placeholder="Harga Satuan" required>
+                        </td>
+                    </tr>
 
-                      <tr>
-                          <td>Catatan</td>
-                          <td><textarea name="catatan" id="catatan" class="form-control col-md"></textarea></td>
-                      </tr>
-                      
-                    </table>
-                      
-                  
-                  <div class="form-group row mb-0">
-                      <label for="simpan" class="col-md-4 col-form-label"></label>
-                      <div class="col-md-6 offset-md-4">
-                          <button type="submit" class="btn btn-primary">
-                              {{ __('Simpan') }}
-                          </button>
-                      </div>
-                  </div>
-                </form>
-              </div>
+                    <tr>
+                        <td>Catatan</td>
+                        <td><textarea name="catatan" id="catatan" class="form-control col-md"></textarea></td>
+                    </tr>
+                    
+                </table>
+                    
+                <div class="form-group row mb-0">
+                    <label for="simpan" class="col-md-4 col-form-label"></label>
+                    <div class="col-md-6 offset-md-4">
+                        <button type="submit" class="btn btn-primary">
+                            {{ __('Simpan') }}
+                        </button>
+                    </div>
+                </div>
+            </form>
             </div>
-          </div>
-          <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
-      </div>
+    </div>
+        <!-- /.modal-content -->
+</div>
+    <!-- /.modal-dialog -->
+    </div>
 
     
         <script>
@@ -394,7 +393,7 @@
                 var id = $('#namaBarang').val();
                 
                 $.get("{{ url('loadBarang')}}/"+id, function(data) {
-                    $('#spesifikasi').val(data.spesifikasi);
+                    $('#spek').val(data.spesifikasi);
                     $('#nama_barang').val(data.nama);
                     $('#satuan').html(data.satuanBarang);
                     $('#satuan').selectize({

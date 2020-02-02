@@ -46,8 +46,8 @@
                         <th width="15%">Nomor Usulan</th>
                         <th width="10%">Lampiran</th>
                         <th width="25%">Perihal Usulan</th>
-                        <th width="15%">RAB</th>
-                        <th width="10%">#</th>
+                        <th width="10%">RAB</th>
+                        <th width="15%">#</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,8 +58,11 @@
                             <td>{{getTfi($data->tgl_usulan)}}</td>
                             <td>{{$data->perihal_usulan}}</td>
                             <td style="text-align:right">{{getNumber($data->jum)}}</td>
-                            <td>
-                                <a href="{{url('usulan/detail/'.$data->id_usulan.'')}}" class="btn btn-primary btn-sm"><i class="fa fa-loop"></i> Detail</a>
+                            <td style="text-align:center">
+                                <div class="btn-group">
+                                    <a href="{{url('usulan/detail/'.$data->id_usulan.'')}}" class="btn btn-primary btn-xs"><i class="fa fa-reorder"></i> Detail</a>
+                                    <a href="{{url('usulan/telusur/'.$data->id_usulan.'')}}" class="btn btn-info btn-xs"><i class="fa fa-search"></i> Telusur</a>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

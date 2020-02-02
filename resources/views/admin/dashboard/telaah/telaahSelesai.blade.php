@@ -103,6 +103,7 @@
                         <td><b>Satuan</b></td>
                         <td><b>Harga Satuan</b></td>
                         <td><b>Jumlah</b></td>
+                        <td><b>Catatan</b></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -119,6 +120,7 @@
                         <td>{{$item->satuan}}</td>
                         <td style="text-align:right">{{getNumber($item->harga_telaah)}}</td>
                         <td style="text-align:right">{{getNumber($item->qty_telaah*$item->harga_telaah)}}</td>
+                        <td>{{$item->catatan_kebutuhan}}</td>
                     </tr>    
                     @endforeach
                 </tbody>
@@ -126,6 +128,7 @@
                     <tr>
                         <td colspan="6" style="text-align:right"><b> TOTAL</b></td>
                         <td style="text-align:right"><b>{{getNumber($total)}}</b></td>
+                        <td></td>
                     </tr>
                 </tfoot>
             </table>

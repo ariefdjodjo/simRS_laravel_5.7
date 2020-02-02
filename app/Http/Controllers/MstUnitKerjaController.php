@@ -43,14 +43,19 @@ class MstUnitKerjaController extends Controller
      */
     public function tambah(Request $request)
     {
-        $unitKerja = new MstUnitKerja();
-        $unitKerja->nama_unit_kerja = $request->nama_unit_kerja;
-        $unitKerja->no_telp = $request->no_telp;
-        $unitKerja->email_unit_kerja = $request->email_unit_kerja;
-        $unitKerja->kode_agenda_satker = $request->kode_agenda_satker;
-        $unitKerja->save();
+        try{
+            $unitKerja = new MstUnitKerja();
+            $unitKerja->nama_unit_kerja = $request->nama_unit_kerja;
+            $unitKerja->no_telp = $request->no_telp;
+            $unitKerja->email_unit_kerja = $request->email_unit_kerja;
+            $unitKerja->kode_agenda_satker = $request->kode_agenda_satker;
+            $unitKerja->save();
 
-        return Redirect('unitKerja/data');
+            return Redirect('unitKerja/data')->with(getNotif('Berhasil di tambahkan', 'success'));
+        } catch (Exception $e) {
+            return back()->with(getNotif('Gagal di tambahkan', 'error'));
+        }
+        
     }
 
     /**
@@ -86,15 +91,20 @@ class MstUnitKerjaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //proses edit data
-        $unitKerja = MstUnitKerja::find($id);
-        $unitKerja->nama_unit_kerja = $request->nama_unit_kerja;
-        $unitKerja->no_telp = $request->no_telp;
-        $unitKerja->email_unit_kerja = $request->email_unit_kerja;
-        $unitKerja->kode_agenda_satker = $request->kode_agenda_satker;
-        $unitKerja->update();
+        try{
+            //proses edit data
+            $unitKerja = MstUnitKerja::find($id);
+            $unitKerja->nama_unit_kerja = $request->nama_unit_kerja;
+            $unitKerja->no_telp = $request->no_telp;
+            $unitKerja->email_unit_kerja = $request->email_unit_kerja;
+            $unitKerja->kode_agenda_satker = $request->kode_agenda_satker;
+            $unitKerja->update();
 
-        return Redirect('unitKerja/data');
+            return Redirect('unitKerja/data')->with(getNotif('Berhasil di tambahkan', 'success'));
+        } catch(Exception $e) {
+            return back()->with(getNotif('Gagal diubah', 'error'));
+        }
+        
     }
 
     /**

@@ -43,13 +43,13 @@
                 <tr>
                     <td width="70%">
                         <div class="box-header">
-                            <b><h2 style="padding:0;">Data Usulan</h2></b>
+                            <b><h2 style="padding:0;">Rekap Usulan dan Telaah Tahun {{$tahun}}</h2></b>
                         </div>
                     </td>
                     <td width="30%" style="text-align:right">
                         <div class="btn-group">
-                            <a href="{{URL::to('/rekapUsulan/pdf/'.$tahun)}}" target="blank" class="btn btn-info btn-sm"><i class="fa fa-print"></i> Cetak PDF</a>
-                            <a href="{{URL::to('/rekapUsulan/excel/'.$tahun)}}" class="btn btn-warning btn-sm"><i class="fa fa-file-excel-o"></i> Eksport Excel</a>
+                            <a href="{{URL::to('telaah/pdfLaporanTelaah/'.$tahun.'/0')}}" target="blank" class="btn btn-info btn-xs"><i class="fa fa-print"></i> Cetak PDF</a>
+                            <a href="{{URL::to('laporan/telaah/eksport/'.$tahun)}}" target="blank" class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i> Eksport Data Telaah</a>
                         </div>
                     </td>
                 </tr>
@@ -77,7 +77,7 @@
                             <td style="text-align:right">{{getNumber($data->jum_usulan)}}</td>
                             <td style="text-align:right">{{getNumber($data->jum_telaah)}}</td>
                             <td style="text-align:right">{{getNumber($selisih)}}</td>
-                            <td style="text-align:center"><a href="{{URL::to('/rekapDetailUsulan/'.$tahun.'/'.$data->jenis_usulan)}}" class="btn btn-primary">Detail</a></td>
+                            <td style="text-align:center"><a href="{{URL::to('/rekapDetailUsulan/'.$tahun.'/'.$data->jenis_usulan)}}" class="btn btn-primary btn-sm">Detail</a></td>
                         </tr>
 
                         <?php $total+=$data->jum_usulan; ?>
@@ -86,11 +86,14 @@
                     @endforeach
                 </tbody>
                 <tfoot>
-                    <td colspan="2">Total</td>
-                    <td style="text-align:right">{{getNumber($total)}}</td>
-                    <td style="text-align:right">{{getNumber($totalTelaah)}}</td>
-                    <td style="text-align:right">{{getNumber($totalSelisih)}}</td>
-                    <td></td>
+                    <tr>
+                        <td colspan="2">Total</td>
+                        <td style="text-align:right">{{getNumber($total)}}</td>
+                        <td style="text-align:right">{{getNumber($totalTelaah)}}</td>
+                        <td style="text-align:right">{{getNumber($totalSelisih)}}</td>
+                        <td></td>
+                    </tr>
+                    
                 </tfoot>
             </table>
             

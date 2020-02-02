@@ -47,7 +47,7 @@
 	          <div class="">
 	              <label class="col-md-4 control-label">Kode Agenda Satker</label>
 	              <div class="col-md-6 has-error">
-	                  <input type="email" class="form-control" name="kode_agenda_satker" required>
+	                  <input type="text" class="form-control" name="kode_agenda_satker" required>
 	                  
 	                  <small class="help-block"></small>
 	              </div>

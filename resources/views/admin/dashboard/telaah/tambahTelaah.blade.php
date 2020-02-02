@@ -106,7 +106,7 @@
 
           <!-- Text input-->
           <div class="form-group">
-            <label class="col-md-2 control-label" for="alasan">Telaah/Analisis Kebutuhan</label>  
+            <label class="col-md-2 control-label" for="alasan">Alasan Kebutuhan</label>  
             <div class="col-md-8">
             <textarea name="alasan" id="alasan" class="form-control input-md"></textarea>
             <span class="help-block"></span>  

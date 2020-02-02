@@ -32,7 +32,7 @@
     ?>
     <div class="box box-primary">
         <div class="box-header">
-            <b><h3>Data Usulan</h3></b>
+            <b><h3>Data Draft Telaah Belum Dikirim</h3></b>
         </div>
         <div class="box-body">
             @if($tahun==0)
@@ -63,9 +63,9 @@
 
                             <td>
                                 @if($data->tgl_kirim == NULL)
-                                    <a href="{{url('telaah/tambahTelaah/'.$data->id_usulan.'/detailTelaah')}}" class="btn btn-primary btn-sm"><i class="fa fa-loop"></i> Detail</a>
+                                    <a href="{{url('telaah/tambahTelaah/'.$data->id_telaah.'/detailTelaah')}}" class="btn btn-primary btn-sm"><i class="fa fa-loop"></i> Detail</a>
                                 @else 
-                                    <a href="{{url('telaah/selesai/'.$data->id_usulan)}}" class="btn btn-primary btn-sm"><i class="fa fa-loop"></i> Detail</a>
+                                    <a href="{{url('telaah/selesai/'.$data->id_telaah)}}" class="btn btn-primary btn-sm"><i class="fa fa-loop"></i> Detail</a>
                                 @endif
                             </td>
                         </tr>

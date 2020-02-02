@@ -1,3 +1,4 @@
+
       <!-- Left side column. contains the logo and sidebar -->
       <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
@@ -15,18 +16,16 @@
 
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
-            <li class="header">MAIN NAVIGATION MAHASISWA</li>
-            
-            
+            {{-- <li class="header">Laporan</li> --}}
             <li class="treeview active">
               <a href="#">
                 <i class="fa fa-pie-chart"></i>
-                <span>Mahasiswa</span>
+                <span>Laporan</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu collapse">
-                <li><a href=""><i class="fa fa-circle-o"></i> Nilai Semester</a></li>                
-                <li><a href=""><i class="fa fa-circle-o"></i> Reset Password</a></li>
+                <li><a href="{{URL::to('manajemen/laporan/0')}}"><i class="fa fa-circle-o"></i> Laporan Penyerapan</a></li>                
+                <li><a href="{{URL::to('manajemen/efisiensi/0')}}"><i class="fa fa-circle-o"></i> Laporan Efisiensi</a></li>
               </ul>
             </li>
         </section>

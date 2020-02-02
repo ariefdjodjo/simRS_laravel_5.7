@@ -43,51 +43,50 @@
             </table>
         </div>
         <div class="box-body">
-            
-                    <table class="table table-bordered table-hover" id="tbl_barang" style="">
-                        <thead>
-                            <tr style="text-align:center">
-                                <td><b>No</b></td>
-                                <td><b>Nama Barang</b></td>
-                                <td><b>Spesifikasi</b></td>
-                                <td><b>Satuan</b></td>
-                                <td><b>Harga Usulan</b></td>
-                                <td><b>Harga Perkiraan</b></td>
-                                <td><b>#</b></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php 
-                                $urut = 1;
-                                $jumlah = 0;
-                                $total = 0;    
-                            ?>
-                            @foreach ($barang as $item)
-                            <?php 
-                                $jumlah = $item->qty_usulan*$item->harga_usulan;
-                                $total+=$jumlah;
-                            ?>
-                            <tr 
-                                @if ($item->harga_satuan >= $item->harga_telaah)
-                                    class="success"
-                                @else
-                                    class="danger"
-                                @endif
+            <table class="table table-bordered table-hover" id="tbl_barang" style="">
+                <thead>
+                    <tr style="text-align:center">
+                        <td><b>No</b></td>
+                        <td><b>Nama Barang</b></td>
+                        <td><b>Spesifikasi</b></td>
+                        <td><b>Satuan</b></td>
+                        <td><b>Harga Usulan</b></td>
+                        <td><b>Harga Perkiraan</b></td>
+                        <td><b>#</b></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                        $urut = 1;
+                        $jumlah = 0;
+                        $total = 0;    
+                    ?>
+                    @foreach ($barang as $item)
+                    <?php 
+                        $jumlah = $item->qty_usulan*$item->harga_usulan;
+                        $total+=$jumlah;
+                    ?>
+                    <tr 
+                        @if ($item->harga_satuan >= $item->harga_telaah)
+                            class="success"
+                        @else
+                            class="danger"
+                        @endif
 
-                            >
-                                <td>{{$urut++}}</td>
-                                <td>{{$item->nama_barang}}</td>
-                                <td>{{$item->spesifikasi}}</td>
-                                <td>{{$item->satuan}}</td>
-                                <td style="text-align:right">{{getNumber($item->harga_usulan)}}</td>
-                                <td style="text-align:right">
-                                  {{getNumber($item->harga_telaah)}}
-                                </td>
-                                <td>
-                                  
-                                    <button class="btn btn-success btn-sm" title="Detail Harga" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-content="Harga berasal dari ......" ><i class="fa fa-list"></i></button>
+                    >
+                        <td>{{$urut++}}</td>
+                        <td>{{$item->nama_barang}}</td>
+                        <td>{{$item->spesifikasi}}</td>
+                        <td>{{$item->satuan}}</td>
+                        <td style="text-align:right">{{getNumber($item->harga_usulan)}}</td>
+                        <td style="text-align:right">
+                            {{getNumber($item->harga_telaah)}}
+                        </td>
+                        <td>
+                            
+                            <button class="btn btn-success btn-sm" title="Detail Harga" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-content="Harga berasal dari ......" ><i class="fa fa-list"></i></button>
 
-                                    <a href="#edit{{$item->id_barang_usulan}}" data-toggle="modal" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>
+                            <a href="#edit{{$item->id_barang_usulan}}" data-toggle="modal" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>
 
 <!-- modal -->
 <div class="modal modal-default fade" id="edit{{$item->id_barang_usulan}}">
